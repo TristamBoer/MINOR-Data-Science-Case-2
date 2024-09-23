@@ -5,7 +5,7 @@ st.title('Openmeteo Weather app')
 st.info('This is a weather app')
 
 with st.expander('Data'):
-  st.write('**Weather DataFrame')
+  st.write('**Weather DataFrame**')
   cache_session = requests_cache.CachedSession('.cache', expire_after = -1)
   retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
   openmeteo = openmeteo_requests.Client(session = retry_session)

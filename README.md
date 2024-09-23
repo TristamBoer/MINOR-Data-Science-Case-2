@@ -1,13 +1,10 @@
-# 📦 Streamlit App Starter Kit 
-```
-⬆️ (Replace above with your app's name)
-```
+Case 2 app
 
-Description of the app ...
+This is a weather app. With historical weather data and climate models.
 
 ## Demo App
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://app-starter-kit.streamlit.app/)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https:/case2.streamlit.app/)
 
 ## GitHub Codespaces
 

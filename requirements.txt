@@ -1,1 +1,7 @@
-streamlit>=1.26.0
+streamlit
+pandas
+plotly
+plotly_express
+openmeteo_requests
+requests_cache
+retry_requests

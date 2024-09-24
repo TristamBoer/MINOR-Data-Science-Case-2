@@ -65,7 +65,45 @@ daily_dataframe.index = daily_dataframe['date']
 daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'], yearfirst=True)
 
 
+fig = go.Figure()
 
+for x in ['daylight_duration', 'precipitation_sum', 'precipitation_hours']:
+    fig.add_trace(go.Scatter(
+        x=daily_dataframe[x], y=daily_dataframe['temperature_2m_mean'],
+        mode='markers', name=x
+    ))
+
+dropdown_buttons = [
+    {'label': 'daylight_duration', 'method': 'update',
+     'args': [{'visible': [True, False, False]},
+              {'title': 'Daylight Duration'}]},
+    
+    {'label': 'sunshine_duration', 'method': 'update',
+     'args': [{'visible': [False, True, False]},
+              {'title': 'Precipitation Sum'}]},    
+    
+    {'label': 'precipitation_hours', 'method': 'update',
+     'args': [{'visible': [False, False, True]},
+              {'title': 'Precipitation Hours'}]},        
+]
+
+fig.update_layout(
+    updatemenus=[{
+        'type': 'dropdown',
+        'x': 1.1, 'y': 1.15,
+        'showactive': True,
+        'active': 0,
+        'buttons': dropdown_buttons
+    }],
+    title={'text': 'Gemiddelde temperatuur in Amsterdam'},
+    xaxis={'title': {'text': 'Tijd [uur]'}},               
+    yaxis={'title': {'text': 'Temperatuur [°C]'}},         
+)
+
+fig.data[1].visible=False
+fig.data[2].visible=False
+
+st.plotly_chart(fig, use_container_width=True)
 
 
 
@@ -82,5 +120,4 @@ st.set_page_config(page_title='Historical Weather Data')
 st.markdown('# Historical Weather Data')
 
 with st.expander('Data'):
-  st.write('**Raw Data**')
   daily_dataframe

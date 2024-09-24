@@ -9,4 +9,3 @@ st.sidebar.success("Select a demo above.")
 st.title('Openmeteo Weather app')
 
 st.info('This is a weather app')
-st.write('**Fuck you**')

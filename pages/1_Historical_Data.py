@@ -3,6 +3,8 @@ import pandas as pd
 import openmeteo_requests
 import requests_cache
 from retry_requests import retry
+import plotly.graph_objects as go
+import matplotlib.pyplot as plt
 
 # Setup the Open-Meteo API client with cache and retry on error
 cache_session = requests_cache.CachedSession('.cache', expire_after = -1)

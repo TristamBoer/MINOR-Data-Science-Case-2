@@ -6,6 +6,11 @@ from retry_requests import retry
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 
+
+st.set_page_config(page_title='Historical Weather Data')
+
+st.markdown('# Historical Weather Data')
+
 # Setup the Open-Meteo API client with cache and retry on error
 cache_session = requests_cache.CachedSession('.cache', expire_after = -1)
 retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
@@ -67,6 +72,16 @@ daily_dataframe.index = daily_dataframe['date']
 daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'], yearfirst=True)
 
 
+
+
+
+
+
+
+with st.expander('Data'):
+  daily_dataframe
+
+
 fig = go.Figure()
 
 for x in ['daylight_duration', 'precipitation_sum', 'precipitation_hours']:
@@ -106,20 +121,3 @@ fig.data[1].visible=False
 fig.data[2].visible=False
 
 st.plotly_chart(fig, use_container_width=True)
-
-
-
-
-
-
-
-
-
-
-
-st.set_page_config(page_title='Historical Weather Data')
-
-st.markdown('# Historical Weather Data')
-
-with st.expander('Data'):
-  daily_dataframe

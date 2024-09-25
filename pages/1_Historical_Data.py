@@ -78,13 +78,30 @@ col1, col2, col3 = st.columns([1, 1, 4])
 with col1:
     st.header("Select Variable Set 1")
     variable1 = st.selectbox("Select first variable:", [
-        'temperature_2m_mean', 'apparent_temperature_mean',
-        'daylight_duration', 'sunshine_duration', 'precipitation_sum'
+	    'date', 'temperature_2m_mean', 'apparent_temperature_mean',
+       'daylight_duration', 'sunshine_duration', 'precipitation_sum',
+       'rain_sum', 'snowfall_sum', 'precipitation_hours', 'wind_speed_10m_max',
+       'wind_gusts_10m_max', 'wind_direction_10m_dominant'
     ])
+			     
+			     
+			     
+			 #     [
+    #     'temperature_2m_mean', 'apparent_temperature_mean',
+    #     'daylight_duration', 'sunshine_duration', 'precipitation_sum'
+    # ])
 
 with col2:
     st.header("Select Variable Set 2")
     variable2 = st.selectbox("Select second variable:", [
+	    'date', 'temperature_2m_mean', 'apparent_temperature_mean',
+       'daylight_duration', 'sunshine_duration', 'precipitation_sum',
+       'rain_sum', 'snowfall_sum', 'precipitation_hours', 'wind_speed_10m_max',
+       'wind_gusts_10m_max', 'wind_direction_10m_dominant'
+    ])
+			     
+			     
+			     [
         'rain_sum', 'snowfall_sum', 'precipitation_hours',
         'wind_speed_10m_max', 'wind_gusts_10m_max', 'wind_direction_10m_dominant'
     ])

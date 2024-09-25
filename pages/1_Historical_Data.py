@@ -74,7 +74,13 @@ daily_dataframe['sunshine_duration'] = (daily_dataframe['sunshine_duration'] / 6
 col1, col2 = st.columns([1,2])
 
 with col1:
-	st.write('** test **')
+	st.mardown(
+		'''
+  De DataFrame bevat de volgende kolommen:
+  - Item 1
+  - Item 2
+  		'''
+	)
 
 with col2:
 	daily_dataframe

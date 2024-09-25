@@ -72,7 +72,7 @@ daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'], yearfirst=True
 
 
 
-col1, col2, col3 = st.beta_columns([1, 1, 3])
+col1, col2, col3 = st.columns([1, 1, 3])
 
 with col1:
 	NaN_options = ['Including NaN', 'Excluding NaN']

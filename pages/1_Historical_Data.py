@@ -7,12 +7,7 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 from SessionState import _get_state
 
-state = _get_state()
-state.page_config = st.set_page_config(page_title='Historical Weather Data',
-		  layout='wide',
-		  initial_sidebar_state='expanded')
-
-state.sync()
+st.set_page_config(page_title='Historical Weather Data')
 
 st.markdown('# Historical Weather Data')
 

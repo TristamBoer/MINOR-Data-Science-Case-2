@@ -79,12 +79,12 @@ st.markdown(
 
 
 st.header('Historical Weather DataFrame')
-col1, col2 = st.columns([1,2.5])
+col1, col2 = st.columns([1,2.65])
 
 with col1:
 	st.markdown(
 	'''  
- 	De Historical Weather DataFrame bevat de volgende kolommen:
+ De Historical Weather DataFrame bevat de volgende kolommen:
 	- **Date:**  
 	  *Bevat de datums van alle datapunten. Elk rij in dit kolom is een nieuwe dag.*  
 	- **temperature_2m_mean:**  

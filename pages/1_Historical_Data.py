@@ -74,38 +74,39 @@ daily_dataframe['sunshine_duration'] = (daily_dataframe['sunshine_duration'] / 6
 col1, col2 = st.columns([1,2])
 
 with col1:
-    st.markdown(
-        '''
-        De DataFrame bevat de volgende kolommen:  
-        - **Date:**  
-          *Bevat de datums van alle datapunten. Elk rij in dit kolom is een nieuwe dag.*  
-        - **temperature_2m_mean:**  
-          *Bevat de gemiddelde temperatuur, in graden Celsius, dat op twee meter hoog is gemeten.*  
-        - **apparent_temperature_mean:**  
-          *Bevat de gemiddelde gevoels temperatuur, in graden Celsius, dat op twee meter is gemeten.*  
-        - **daylight_duration:**  
-          *Bevat hoelang, in uren, het op een dag daglicht is.*  
-        - **sunshine_duration:**  
-          *Bevat hoelang, in uren, de zon op een dag schijnt.*  
-        - **precipitation_sum:**  
-          *Bevat de som, in millimeter, van de hoeveelheid gevallen neerslag.*  
-        - **rain_sum:**  
-          *Bevat de som, in millimeter, van de hoeveelheid gevallen regen.*  
-        - **snowfall_sum:**  
-          *Bevat de som, in millimeter, van de hoeveelheid gevallen sneeuw.*  
-        - **precipitation_hours:**  
-          *Bevat hoelang, in uren, het regent op een dag.*  
-        - **wind_speed_10m_max:**  
-          *Bevat, in km/u, de maximale wind snelheid op een dag.*  
-        - **wind_gusts_10m_max:**  
-          *Bevat, in km/u, de maximale windvlaag snelheid op een dag.*  
-        - **wind_direction_10m_dominant:**  
-          *Bevat, in graden, de dominante wind directie.*  
-        '''
-    )
+	st.header('De Historical Weather DataFrame bevat de volgende kolommen:')
+	st.markdown(
+	'''  
+	- **Date:**  
+	  *Bevat de datums van alle datapunten. Elk rij in dit kolom is een nieuwe dag.*  
+	- **temperature_2m_mean:**  
+	  *Bevat de gemiddelde temperatuur, in graden Celsius, dat op twee meter hoog is gemeten.*  
+	- **apparent_temperature_mean:**  
+	  *Bevat de gemiddelde gevoels temperatuur, in graden Celsius, dat op twee meter is gemeten.*  
+	- **daylight_duration:**  
+	  *Bevat hoelang, in uren, het op een dag daglicht is.*  
+	- **sunshine_duration:**  
+	  *Bevat hoelang, in uren, de zon op een dag schijnt.*  
+	- **precipitation_sum:**  
+	  *Bevat de som, in millimeter, van de hoeveelheid gevallen neerslag.*  
+	- **rain_sum:**  
+	  *Bevat de som, in millimeter, van de hoeveelheid gevallen regen.*  
+	- **snowfall_sum:**  
+	  *Bevat de som, in millimeter, van de hoeveelheid gevallen sneeuw.*  
+	- **precipitation_hours:**  
+	  *Bevat hoelang, in uren, het regent op een dag.*  
+	- **wind_speed_10m_max:**  
+	  *Bevat, in km/u, de maximale wind snelheid op een dag.*  
+	- **wind_gusts_10m_max:**  
+	  *Bevat, in km/u, de maximale windvlaag snelheid op een dag.*  
+	- **wind_direction_10m_dominant:**  
+	  *Bevat, in graden, de dominante wind directie.*  
+	'''
+	)
 
 
 with col2:
+	st.header('Historical Weather DataFrame')
 	daily_dataframe
 
 st.text("")

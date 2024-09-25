@@ -124,7 +124,7 @@ fig.update_layout(
 fig.data[1].visible=False
 fig.data[2].visible=False
 
-with col2:
+with col3:
 	with st.expander('Data'):	
 		daily_dataframe
 	with st.expander('Plot'):

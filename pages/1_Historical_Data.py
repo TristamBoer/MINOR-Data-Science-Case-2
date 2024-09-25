@@ -6,7 +6,7 @@ from retry_requests import retry
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 
-
+st.set_page_config(layout="wide")
 st.set_page_config(page_title='Historical Weather Data')
 
 st.markdown('# Historical Weather Data')

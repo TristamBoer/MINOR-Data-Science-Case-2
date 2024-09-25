@@ -76,10 +76,16 @@ daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'], yearfirst=True
 
 
 
+NaN_options = ['Including NaN', 'Excluding NaN']
 
+# Single selection using radio buttons
+selected_option = st.radio("Selecter om wel of geen NaN waarden te zien :", NaN_options)
+
+st.write('Selected NaN option:', selected_option)
 
 with st.expander('Data'):
-  daily_dataframe
+	
+	daily_dataframe
 
 
 fig = go.Figure()

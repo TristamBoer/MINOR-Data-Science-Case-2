@@ -71,9 +71,9 @@ daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'], yearfirst=True
 daily_dataframe['daylight_duration'] = (daily_dataframe['daylight_duration'] / 60) / 60
 daily_dataframe['sunshine_duration'] = (daily_dataframe['sunshine_duration'] / 60) / 60
 
+st.header('Historical Weather DataFrame')
 col1, col2 = st.columns([1,2])
 
-st.header('Historical Weather DataFrame')
 with col1:
 	st.markdown(
 	'''  
@@ -104,7 +104,6 @@ with col1:
 	  *Bevat, in graden, de dominante wind directie.*  
 	'''
 	)
-
 
 with col2:
 	daily_dataframe

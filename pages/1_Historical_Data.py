@@ -5,7 +5,7 @@ import requests_cache
 from retry_requests import retry
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
-import ploty_express as px
+import ploty-express as px
 
 st.set_page_config(page_title='Historical Weather Data')
 

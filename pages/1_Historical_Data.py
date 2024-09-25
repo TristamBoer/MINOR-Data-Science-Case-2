@@ -71,6 +71,13 @@ daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'], yearfirst=True
 daily_dataframe['daylight_duration'] = (daily_dataframe['daylight_duration'] / 60) / 60
 daily_dataframe['sunshine_duration'] = (daily_dataframe['sunshine_duration'] / 60) / 60
 
+st.markdown(
+	'''
+ De Openmeteo API bevat historical Weather Data. Met deze  
+ 	'''
+)
+
+
 st.header('Historical Weather DataFrame')
 col1, col2 = st.columns([1,2])
 
@@ -106,7 +113,7 @@ with col1:
 	)
 
 with col2:
-	daily_dataframe
+	st.dataframe(daily_dataframe, height=600)
 
 st.text("")
 

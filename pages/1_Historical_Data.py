@@ -5,12 +5,14 @@ import requests_cache
 from retry_requests import retry
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
+from SessionState import _get_state
 
-def wide_space_default():
-	st.set_page_config(layout='wide')
-wide_space_default()
+state = _get_state()
+state.page_config = st.set_page_config(page_title='Historical Weather Data',
+		  layout='wide',
+		  initial_sidebar_state='expanded')
 
-st.set_page_config(page_title='Historical Weather Data')
+state.sync()
 
 st.markdown('# Historical Weather Data')
 

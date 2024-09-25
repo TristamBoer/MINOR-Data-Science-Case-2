@@ -73,10 +73,11 @@ daily_dataframe['sunshine_duration'] = (daily_dataframe['sunshine_duration'] / 6
 
 col1, col2 = st.columns([1,2])
 
+st.header('Historical Weather DataFrame')
 with col1:
-	st.header('De Historical Weather DataFrame bevat de volgende kolommen:')
 	st.markdown(
 	'''  
+ 	De Historical Weather DataFrame bevat de volgende kolommen:
 	- **Date:**  
 	  *Bevat de datums van alle datapunten. Elk rij in dit kolom is een nieuwe dag.*  
 	- **temperature_2m_mean:**  
@@ -106,7 +107,6 @@ with col1:
 
 
 with col2:
-	st.header('Historical Weather DataFrame')
 	daily_dataframe
 
 st.text("")

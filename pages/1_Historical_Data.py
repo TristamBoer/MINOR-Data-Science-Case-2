@@ -72,63 +72,30 @@ daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'], yearfirst=True
 
 
 
-col1, col2, col3 = st.columns([1, 1, 3])
+col1, col2, col3 = st.columns(3)
 
 with col1:
-	NaN_options = ['Including NaN', 'Excluding NaN']
-	
-	# Single selection using radio buttons
-	selected_option = st.radio("Selecter welke te zien gevisualisseerd:", NaN_options)
+    st.header("Select Variable Set 1")
+    variable1 = st.selectbox("Select first variable:", [
+        'temperature_2m_mean', 'apparent_temperature_mean',
+        'daylight_duration', 'sunshine_duration', 'precipitation_sum'
+    ])
 
 with col2:
-	NaN_options2 = ['Including NaN', 'Excluding NaN']
-	
-	# Single selection using radio buttons
-	selected_option2 = st.radio("Selecter welke te zien gevisualisseerd:", NaN_options2)
-
-fig = go.Figure()
-
-for x in ['daylight_duration', 'precipitation_sum', 'precipitation_hours']:
-    fig.add_trace(go.Scatter(
-        x=daily_dataframe[x], y=daily_dataframe['temperature_2m_mean'],
-        mode='markers', name=x
-    ))
-
-dropdown_buttons = [
-    {'label': 'daylight_duration', 'method': 'update',
-     'args': [{'visible': [True, False, False]},
-              {'title': 'Daylight Duration'}]},
-    
-    {'label': 'sunshine_duration', 'method': 'update',
-     'args': [{'visible': [False, True, False]},
-              {'title': 'Precipitation Sum'}]},    
-    
-    {'label': 'precipitation_hours', 'method': 'update',
-     'args': [{'visible': [False, False, True]},
-              {'title': 'Precipitation Hours'}]},        
-]
-
-fig.update_layout(
-    updatemenus=[{
-        'type': 'dropdown',
-        'x': 1.1, 'y': 1.15,
-        'showactive': True,
-        'active': 0,
-        'buttons': dropdown_buttons
-    }],
-    title={'text': 'Gemiddelde temperatuur in Amsterdam'},
-    xaxis={'title': {'text': 'Tijd [uur]'}},               
-    yaxis={'title': {'text': 'Temperatuur [°C]'}},         
-)
-
-fig.data[1].visible=False
-fig.data[2].visible=False
+    st.header("Select Variable Set 2")
+    variable2 = st.selectbox("Select second variable:", [
+        'rain_sum', 'snowfall_sum', 'precipitation_hours',
+        'wind_speed_10m_max', 'wind_gusts_10m_max', 'wind_direction_10m_dominant'
+    ])
 
 with col3:
-	with st.expander('Data'):	
-		daily_dataframe
-	with st.expander('Plot'):
-		st.plotly_chart(fig, use_container_width=True)
+    st.header("Plot")
+    
+    if variable1 and variable2:
+        fig = px.line(df, x='date', y=[variable1, variable2], title=f'{variable1} and {variable2} Over Time')
+        st.plotly_chart(fig)
+
+
 
 
 # fig = go.Figure()

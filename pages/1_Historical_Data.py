@@ -71,7 +71,13 @@ daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'], yearfirst=True
 daily_dataframe['daylight_duration'] = (daily_dataframe['daylight_duration'] / 60) / 60
 daily_dataframe['sunshine_duration'] = (daily_dataframe['sunshine_duration'] / 60) / 60
 
+col1, col2 = st.columns([1,2])
 
+with col1:
+	st.write('** test **')
+
+with col2:
+	daily_dataframe
 
 col1, col2, col3 = st.columns([1, 1, 4])
 

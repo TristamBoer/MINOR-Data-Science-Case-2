@@ -6,7 +6,10 @@ from retry_requests import retry
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 
-st.set_page_config(layout="wide")
+def wide_space_default():
+	st.set_page_config(layout=“wide”)
+wide_space_default()
+
 st.set_page_config(page_title='Historical Weather Data')
 
 st.markdown('# Historical Weather Data')

@@ -93,7 +93,7 @@ with col3:
     st.header("Plot")
     
     if variable1 and variable2:
-        fig = px.line(df, x='date', y=[variable1, variable2], title=f'{variable1} and {variable2} Over Time')
+        fig = px.line(daily_dataframe, x='date', y=[variable1, variable2], title=f'{variable1} and {variable2} Over Time')
         st.plotly_chart(fig)
 
 

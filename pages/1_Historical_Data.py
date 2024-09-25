@@ -84,12 +84,12 @@ col1, col2 = st.columns([1,2.65])
 with col1:
 	st.markdown(
 	'''  
- De Historical Weather DataFrame bevat de volgende kolommen:
-	- **Date:**  
-	  *Bevat de datums van alle datapunten. Elk rij in dit kolom is een nieuwe dag.*  
-	- **temperature_2m_mean:**  
-	  *Bevat de gemiddelde temperatuur, in graden Celsius, dat op twee meter hoog is gemeten.*  
-	- **apparent_temperature_mean:**  
+ 	De Historical Weather DataFrame bevat de volgende kolommen:
+	  - **Date:**  
+	    *Bevat de datums van alle datapunten. Elk rij in dit kolom is een nieuwe dag.*  
+	  - **temperature_2m_mean:**  
+	    *Bevat de gemiddelde temperatuur, in graden Celsius, dat op twee meter hoog is gemeten.*  
+	  - **apparent_temperature_mean:**  
 	  *Bevat de gemiddelde gevoels temperatuur, in graden Celsius, dat op twee meter is gemeten.*  
 	- **daylight_duration:**  
 	  *Bevat hoelang, in uren, het op een dag daglicht is.*  

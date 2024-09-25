@@ -5,7 +5,6 @@ import requests_cache
 from retry_requests import retry
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
-from SessionState import _get_state
 
 st.set_page_config(page_title='Historical Weather Data')
 

@@ -79,6 +79,8 @@ with col1:
 with col2:
 	daily_dataframe
 
+st.text("")
+
 col1, col2, col3 = st.columns([1, 1, 4])
 
 with col1:

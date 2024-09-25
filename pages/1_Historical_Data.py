@@ -81,10 +81,10 @@ with col1:
 	selected_option = st.radio("Selecter welke te zien gevisualisseerd:", NaN_options)
 
 with col2:
-	NaN_options = ['Including NaN', 'Excluding NaN']
+	NaN_options2 = ['Including NaN', 'Excluding NaN']
 	
 	# Single selection using radio buttons
-	selected_option = st.radio("Selecter welke te zien gevisualisseerd:", NaN_options)
+	selected_option2 = st.radio("Selecter welke te zien gevisualisseerd:", NaN_options2)
 
 fig = go.Figure()
 

@@ -72,14 +72,19 @@ daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'], yearfirst=True
 
 
 
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.beta_columns()
 
 with col1:
 	NaN_options = ['Including NaN', 'Excluding NaN']
 	
 	# Single selection using radio buttons
 	selected_option = st.radio("Selecter welke te zien gevisualisseerd:", NaN_options)
+
+with col2:
+	NaN_options = ['Including NaN', 'Excluding NaN']
 	
+	# Single selection using radio buttons
+	selected_option = st.radio("Selecter welke te zien gevisualisseerd:", NaN_options)
 
 fig = go.Figure()
 

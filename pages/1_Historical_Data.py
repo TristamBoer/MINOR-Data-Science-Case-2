@@ -73,7 +73,7 @@ daily_dataframe['sunshine_duration'] = (daily_dataframe['sunshine_duration'] / 6
 
 
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.columns([1, 1, 4])
 
 with col1:
     st.header("Select Variable Set 1")

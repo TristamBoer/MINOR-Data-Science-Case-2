@@ -76,7 +76,7 @@ daily_dataframe['sunshine_duration'] = (daily_dataframe['sunshine_duration'] / 6
 col1, col2, col3 = st.columns([1, 1, 4])
 
 with col1:
-    st.header("Variable 1")
+    st.header("Plotting Variable 1")
     variable1 = st.selectbox("Select first variable:", [
 	'date', 'temperature_2m_mean', 'apparent_temperature_mean',
 	'daylight_duration', 'sunshine_duration', 'precipitation_sum',
@@ -92,7 +92,7 @@ with col1:
     # ])
 
 with col2:
-    st.header("Variable 2")
+    st.header("Plotting Variable 2")
     variable2 = st.selectbox("Select second variable:", [
 	'date', 'temperature_2m_mean', 'apparent_temperature_mean',
 	'daylight_duration', 'sunshine_duration', 'precipitation_sum',

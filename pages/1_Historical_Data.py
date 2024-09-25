@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 
 def wide_space_default():
-	st.set_page_config(layout=“wide”)
+	st.set_page_config(layout='wide')
 wide_space_default()
 
 st.set_page_config(page_title='Historical Weather Data')

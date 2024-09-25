@@ -1,5 +1,4 @@
 [theme]
-base='dark
 primaryColor="#FFFFFF"   # White text for primary elements
 backgroundColor="#000000"  # Black background
 secondaryBackgroundColor="#333333"  # Dark grey secondary background

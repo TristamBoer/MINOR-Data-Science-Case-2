@@ -79,7 +79,7 @@ st.markdown(
 
 
 st.header('Historical Weather DataFrame')
-col1, col2 = st.columns([1,2])
+col1, col2 = st.columns([1,2.5])
 
 with col1:
 	st.markdown(

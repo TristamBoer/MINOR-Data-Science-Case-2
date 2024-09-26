@@ -376,14 +376,21 @@ monthly_dataframe.reset_index(inplace=True)
 
 monthly_dataframe['month'] = monthly_dataframe['date'].dt.month
 
-# Optioneel: Voeg een kolom toe voor de maandnaam
-monthly_dataframe['month_name'] = monthly_dataframe['date'].dt.strftime('%B')
+monthly_summary = (daily_dataframe.resample('M').agg(
+    rain_sum=('rain_sum', 'sum'),
+    rain_std=('rain_sum', 'std')
+)).reset_index()
 
-# Lijst met La Niña jaren als strings
-la_nina_years = ['1954', '1955', '1964', '1970', '1971', '1973', '1974', '1975', '1983', '1984', 
-                 '1988', '1995', '1998', '1999', '2000', '2005', '2007', '2008', '2010', 
-                 '2011', '2016', '2017', '2020', '2021', '2022']
+# Create a month name column for better labeling
+monthly_summary['month_name'] = monthly_summary['date'].dt.strftime('%B')
 
+# Add Oceanic Niño Index column based on year
+la_nina_years = ['1954', '1955', '1964', '1970', '1971', '1973', '1974', 
+                 '1975', '1983', '1984', '1988', '1995', '1998', '1999', 
+                 '2000', '2005', '2007', '2008', '2010', '2011', '2016', 
+                 '2017', '2020', '2021', '2022']
+
+monthly_summary['Oceanic Niño Index'] = monthly_summary['date'].dt.year.astype(str).isin(la_nina_years).map({True: 'La Niña', False: 'El Niño'})
 
 # Toevoegen van een nieuwe kolom met 'La Niña' of 'El Niño' op basis van de jaarcontrole in yearly_dataframe
 yearly_dataframe['Oceanic Niño Index'] = yearly_dataframe['year'].astype(str).isin(la_nina_years).map({True: 'La Niña', False: 'El Niño'})

@@ -18,7 +18,7 @@ page_config()
 
 @st.cache_data # Zorgt ervoor dat de dataframe altijd geladen is
 def data1():
-    with open(r'path/to/folder/result_shivano.json', 'r') as file:
+    with open('pages/result_shivano.json', 'r') as file:
         return json.load(file)
 knmi_df = pd.DataFrame(data1())
 

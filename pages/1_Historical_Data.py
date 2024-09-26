@@ -221,7 +221,7 @@ fig.update_layout(
 
 st.plotly_chart(fig)
 
-@st.cache_data
+@st.cache_resource
 def prediction():
 	forecast_data = daily_dataframe.rename(columns={'date' : 'ds',
 	                                                'temperature_2m_mean' : 'y'})

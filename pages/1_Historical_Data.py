@@ -82,7 +82,9 @@ daily_dataframe = data()
 
 st.markdown(
 	'''
-	Binnen de Historical Weather data wordt eerst de dataframe verkend. Hierbij wordt verteld wat alle kolommen betekenen, daarbij is een interactieve plot gemaakt om te data te kunnen visualiseren.    
+	Binnen de Historical Weather data wordt eerst de dataframe verkend. Hierbij wordt verteld wat alle kolommen betekenen, daarbij is een interactieve scatter plot gemaakt om te data per variabele te kunnen visualiseren.  
+
+ 	
  	'''
 )
 
@@ -190,16 +192,28 @@ daily_dataframe['wind_direction_category'] = daily_dataframe['wind_direction_10m
 
 
 wind_direction_options = daily_dataframe['wind_direction_category'].unique()
-selected_wind_direction = st.selectbox('Selecteer wind richting', options=wind_direction_options)
+
+col1, col2 = st.columns(2)
+
+with col1:
+	selected_wind_direction = st.selectbox('Selecteer wind richting', options=wind_direction_options)
 
 filtered_df = daily_dataframe[daily_dataframe['wind_direction_category'] == selected_wind_direction]
 
+with col2:
+	variable3 = st.selectbox("Selecteer tweede variabel:", [
+	'date', 'temperature_2m_mean', 'apparent_temperature_mean',
+	'daylight_duration', 'sunshine_duration', 'precipitation_sum',
+	'rain_sum', 'snowfall_sum', 'precipitation_hours', 'wind_speed_10m_max',
+	'wind_gusts_10m_max', 'wind_direction_10m_dominant'
+	])
+
 fig = px.scatter(data_frame=filtered_df,
-                 x='date', y='wind_speed_10m_max',
+                 x=variable3, y='wind_speed_10m_max',
                  color='wind_direction_category')
 
 fig.update_layout(
-    title=f'Wind snelheid (Max) gebaseerd op directie: {selected_wind_direction}',
+    title=f'{variable3} gebaseerd op directie: {selected_wind_direction}',
     yaxis_title='Max Wind Speed [km/h]',
     xaxis_title='Date',
     title_font_size=18,

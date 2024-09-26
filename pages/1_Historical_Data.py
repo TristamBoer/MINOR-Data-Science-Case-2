@@ -236,8 +236,8 @@ fig.add_trace(go.Scatter(
     line=dict(width=0), fillcolor='rgba(0,100,80,0.2)', showlegend=True))
 
 # Streamlit slider for date range selection
-min_date = pd.to_datetime(forecast_data['ds']).min().date()
-max_date = pd.to_datetime(forecast_data['ds']).max().date()
+min_date = pd.to_datetime(predictions['ds']).min().date()
+max_date = pd.to_datetime(predictions['ds']).max().date()
 
 # Create a date slider in Streamlit
 start_date, end_date = st.slider('Select date range:',

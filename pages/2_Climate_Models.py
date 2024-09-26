@@ -135,7 +135,8 @@ fig.update_layout(
 st.plotly_chart(fig)
 
 
-
+august_data = summer_data[summer_data['date'].dt.month == 8]
+august_data['year'] = august_data['date'].dt.year
 
 # Assume august_data is already loaded with necessary fields
 # Generate some example min/max temperature data for August (replace with actual data)

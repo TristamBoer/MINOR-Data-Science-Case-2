@@ -71,6 +71,26 @@ daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'], yearfirst=True
 daily_dataframe['daylight_duration'] = (daily_dataframe['daylight_duration'] / 60) / 60
 daily_dataframe['sunshine_duration'] = (daily_dataframe['sunshine_duration'] / 60) / 60
 
+def categorize_wind_direction(degrees):
+    if (degrees >= 337.5) or (degrees < 22.5):
+        return 'North'
+    elif 22.5 <= degrees < 67.5:
+        return 'North-East'
+    elif 67.5 <= degrees < 112.5:
+        return 'East'
+    elif 112.5 <= degrees < 157.5:
+        return 'South-East'
+    elif 157.5 <= degrees < 202.5:
+        return 'South'
+    elif 202.5 <= degrees < 247.5:
+        return 'South-West'
+    elif 247.5 <= degrees < 292.5:
+        return 'West'
+    elif 292.5 <= degrees < 337.5:
+        return 'North-West'
+
+daily_dataframe['wind_direction_category'] = daily_dataframe['wind_direction_10m_dominant'].apply(categorize_wind_direction)
+
 st.markdown(
 	'''
  De Openmeteo API bevat historical Weather Data. Met deze  

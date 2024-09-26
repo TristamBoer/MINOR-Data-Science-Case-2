@@ -55,6 +55,7 @@ with col2:
         st.header('Climate Change')
         st.markdown(
         '''
+        Bevat de volgende onderdelen:
         
         '''
 )

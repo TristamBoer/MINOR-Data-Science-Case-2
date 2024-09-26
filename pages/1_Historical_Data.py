@@ -10,7 +10,10 @@ np.float_ = np.float64
 from prophet import Prophet
 import plotly_express as px
 
-st.set_page_config(page_title='Historical Weather Data')
+def page_config():
+        st.set_page_config(layout='wide',
+                          page_title="Historical Weather Data")
+page_config()
 
 st.markdown('# Historical Weather Data')
 

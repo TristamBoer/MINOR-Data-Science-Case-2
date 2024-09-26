@@ -6,9 +6,9 @@ from retry_requests import retry
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 import plotly_express as pxe
-from prophet import Prophet
 import numpy as np
 np.float_ = np.float64
+from prophet import Prophet
 
 st.set_page_config(page_title='Historical Weather Data')
 

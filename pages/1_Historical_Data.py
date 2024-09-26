@@ -200,7 +200,7 @@ fig = px.scatter(data_frame=filtered_df,
                  color='wind_direction_category')
 
 fig.update_layout(
-    title=f'Wind Speed (Max) based on Direction: {selected_wind_direction}',
+    title=f'Wind snelheid (Max) gebaseerd op directie: {selected_wind_direction}',
     yaxis_title='Max Wind Speed [km/h]',
     xaxis_title='Date',
     title_font_size=18,

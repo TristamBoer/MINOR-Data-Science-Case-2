@@ -414,16 +414,24 @@ st.plotly_chart(fig)
 
 st.header("Regen bij 'La Niña' en 'El Niño'")
 
-fig = px.bar(monthly_dataframe, 
-                  x='month_name', 
-                  y='rain_sum', 
-                  color='Oceanic Niño Index',
-                  title='Som van de regen per maand met Oceanic Niño Index',
-                  labels={'rain_sum': 'Som van de regen (mm)', 'month_name': 'Maand'},
-                  color_discrete_sequence=px.colors.qualitative.Set1,
-                  error_y='rain_error'
-            )
+# Group by month and Oceanic Niño Index to calculate monthly sum and standard deviation
+monthly_summary = (daily_dataframe.groupby(['month', 'Oceanic Niño Index'])
+                   .agg(rain_sum=('rain_sum', 'sum'),
+                        rain_std=('rain_sum', 'std'))
+                   .reset_index())
 
+# Create a month name column for better labeling
+monthly_summary['month_name'] = monthly_summary['month'].apply(lambda x: month_name[x])
+
+# Create a bar plot with error bars based on the monthly summary dataframe
+fig = px.bar(monthly_summary, 
+              x='month_name', 
+              y='rain_sum', 
+              color='Oceanic Niño Index',
+              title='Som van de regen per maand met Oceanic Niño Index',
+              labels={'rain_sum': 'Som van de regen (mm)', 'month_name': 'Maand'},
+              color_discrete_sequence=px.colors.qualitative.Set1,
+              error_y='rain_std')
 # Set barmode to 'group' for non-stacked bars
 fig.update_layout(
     barmode='group',

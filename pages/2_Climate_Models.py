@@ -132,6 +132,17 @@ fig.update_layout(
 # Display the plot
 st.plotly_chart(fig)
 
+
+
+def predict_temperature(df, temp_column):
+    X = df[['year']]
+    y = df[temp_column]
+    model = LinearRegression()
+    model.fit(X, y)
+    future_years = np.arange(2024, 2051).reshape(-1, 1)
+    predicted = model.predict(future_years)
+    return future_years.flatten(), predicted
+
 @st.cache_data
 def data3():
     # Setup the Open-Meteo API client with cache and retry on error

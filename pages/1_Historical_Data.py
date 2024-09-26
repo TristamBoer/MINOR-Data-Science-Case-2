@@ -187,7 +187,7 @@ st.header('Interactieve scatterplot windrichting')
 col1, col2 = st.columns(2)
 
 with col1:
-	selected_wind_direction = st.selectbox('Selecteer windrichting', options=wind_direction_options)
+	selected_wind_direction = st.selectbox('Selecteer windrichting:', options=wind_direction_options)
 
 filtered_df = daily_dataframe[daily_dataframe['wind_direction_category'] == selected_wind_direction]
 

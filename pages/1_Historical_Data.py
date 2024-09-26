@@ -82,9 +82,11 @@ daily_dataframe = data()
 
 st.markdown(
 	'''
-	Binnen de Historical Weather data wordt eerst de dataframe verkend. Hierbij wordt verteld wat alle kolommen betekenen, daarbij is een interactieve scatter plot gemaakt om te data per variabele te kunnen visualiseren.  
-
- 	
+	Binnen de Historical Weather data worden de volgende onderwerpen besproken:
+ 	- Uitleg DataFrame kolommen
+  	- Interactieve scatterplot visualisatie van DataFrame
+   	- Interactieve scatterplot op basis van wind directie
+    	- Voorspellend model voor gemiddelde temperatuur
  	'''
 )
 
@@ -140,12 +142,6 @@ with col1:
 	'wind_gusts_10m_max', 'wind_direction_10m_dominant'
 	])
 			     
-			     
-			     
-			 #     [
-    #     'temperature_2m_mean', 'apparent_temperature_mean',
-    #     'daylight_duration', 'sunshine_duration', 'precipitation_sum'
-    # ])
 
 with col2:
     st.header("Plotting Variable 2")
@@ -155,12 +151,7 @@ with col2:
 	'rain_sum', 'snowfall_sum', 'precipitation_hours', 'wind_speed_10m_max',
 	'wind_gusts_10m_max', 'wind_direction_10m_dominant'
 	])
-			     
-			     
-			 #     [
-    #     'rain_sum', 'snowfall_sum', 'precipitation_hours',
-    #     'wind_speed_10m_max', 'wind_gusts_10m_max', 'wind_direction_10m_dominant'
-    # ])
+
 
 with col3:
     st.header("Plot")

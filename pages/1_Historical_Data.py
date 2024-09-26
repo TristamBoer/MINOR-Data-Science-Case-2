@@ -9,6 +9,7 @@ import plotly_express as pxe
 import numpy as np
 np.float_ = np.float64
 from prophet import Prophet
+import plotly_express as px
 
 st.set_page_config(page_title='Historical Weather Data')
 

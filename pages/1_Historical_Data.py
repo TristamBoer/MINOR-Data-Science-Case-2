@@ -16,6 +16,10 @@ st.markdown('# Historical Weather Data')
 
 @st.cache_data # Zorgt ervoor dat de dataframe altijd geladen is
 def data():
+	'''
+	Alle code binnen de data() functie is gebruikt van de Openmeteo website zelf.
+	'''
+	
 	# Setup the Open-Meteo API client with cache and retry on error
 	cache_session = requests_cache.CachedSession('.cache', expire_after = -1)
 	retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
@@ -243,15 +247,13 @@ def prediction():
     
     return fig, predictions['ds'].min(), predictions['ds'].max()
 
-# Get the predictions and the date range
 fig, min_date, max_date = prediction()
 
-# Move the slider outside the cached function
+# Datum Slider
 start_date, end_date = st.slider('Select lengte datum:',
                                  min_value=min_date.date(), max_value=max_date.date(),
                                  value=(min_date.date(), max_date.date()), format="YYYY-MM-DD")
 
-# Update the figure with the slider range
 fig.update_layout(title='Temperature Forecast',
                   xaxis_title='Date',
                   yaxis_title='Temperature (°C)',
@@ -259,5 +261,4 @@ fig.update_layout(title='Temperature Forecast',
 
 fig.update_xaxes(range=[str(start_date), str(end_date)])
 
-# Display the updated plot
 st.plotly_chart(fig)

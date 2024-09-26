@@ -351,7 +351,7 @@ yearly_dataframe = daily_dataframe.resample('Y').mean()
 
 daily_dataframe = data4()
 
-# Zorg ervoor dat 'date' de index is
+# Ensure 'date' column is properly parsed and set as the index
 daily_dataframe.set_index('date', inplace=True)
 
 # Convert columns to numeric, ensuring all values can be averaged (handling invalid data)
@@ -360,23 +360,17 @@ daily_dataframe["temperature_2m_max"] = pd.to_numeric(daily_dataframe["temperatu
 daily_dataframe["temperature_2m_min"] = pd.to_numeric(daily_dataframe["temperature_2m_min"], errors="coerce")
 daily_dataframe["rain_sum"] = pd.to_numeric(daily_dataframe["rain_sum"], errors="coerce")
 
-# Resample de data per jaar en bereken de gemiddelde waarden
+# Resample the data per year and calculate the mean values
 yearly_dataframe = daily_dataframe.resample('Y').mean()
 
-# Zet de index (datum) terug als een kolom voor visualisatie
+# Reset the index and create a 'year' column from the 'date'
 yearly_dataframe.reset_index(inplace=True)
-yearly_dataframe['year'] = yearly_dataframe['date'].dt.year  # Extra kolom met alleen het jaar
+yearly_dataframe['year'] = yearly_dataframe['date'].dt.year  # Extra column for the year
 
-# Zorg ervoor dat je daily_dataframe hebt
-daily_dataframe = pd.DataFrame(data=daily_data)
-
-# Zet de 'date' kolom in de index
-daily_dataframe.set_index('date', inplace=True)
-
-# Resample de data per maand en bereken de gemiddelde waarden
+# Resample the data per month and calculate the mean values
 monthly_dataframe = daily_dataframe.resample('M').mean()
 
-# Zet de index (datum) terug als een kolom voor visualisatie
+# Reset the index to work with month values easily, if needed
 monthly_dataframe.reset_index(inplace=True)
 
 # Voeg een kolom toe voor de maand

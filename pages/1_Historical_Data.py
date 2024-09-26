@@ -202,7 +202,7 @@ filtered_df = daily_dataframe[daily_dataframe['wind_direction_category'] == sele
 
 with col2:
 	variable3 = st.selectbox("Selecteer y-as variabel:", [
-	'date', 'temperature_2m_mean', 'apparent_temperature_mean',
+	'temperature_2m_mean', 'apparent_temperature_mean',
 	'sunshine_duration', 'daylight_duration', 'precipitation_sum',
 	'rain_sum', 'snowfall_sum', 'precipitation_hours', 'wind_speed_10m_max',
 	'wind_gusts_10m_max', 'wind_direction_10m_dominant'

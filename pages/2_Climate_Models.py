@@ -247,11 +247,16 @@ def add_temperature_traces(fig, city, visible_min=False, visible_max=False):
 for city in cities:
     add_temperature_traces(fig, city, visible_min=(city == 'Berlin'), visible_max=False)
 
-# Streamlit Radio Buttons for City Selection (Single Selection)
-selected_city = st.radio("Select City", options=cities, index=0)
 
-# Streamlit Radio Buttons for Temperature Type Selection (Single Selection)
-selected_temp_type = st.radio("Select Temperature Type", options=["Min Temp", "Max Temp"], index=0)
+col1, col2 = st.columns(2)
+
+with col1:
+        # Streamlit Radio Buttons for City Selection (Single Selection)
+        selected_city = st.radio("Select City", options=cities, index=0)
+
+with col2:
+        # Streamlit Radio Buttons for Temperature Type Selection (Single Selection)
+        selected_temp_type = st.radio("Select Temperature Type", options=["Min Temp", "Max Temp"], index=0)
 
 # Update the visibility of the traces based on the selected city and temperature type
 for i, city in enumerate(cities):

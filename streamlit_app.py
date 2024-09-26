@@ -42,6 +42,19 @@ col1, col2 = st.columns(2)
 
 with col1:
         st.header('Historical Weather')
+        st.markdown(
+                '''
+                - **Uitleg DataFrame kolommen**  
+                - **Interactieve scatterplot visualisatie van DataFrame**   
+                - **Interactieve scatterplot op basis van windrichting**  
+                - **Voorspellend model voor gemiddelde temperatuur**  
+                '''
+)
 
 with col2:
         st.header('Climate Change')
+                st.markdown(
+                '''
+        
+                '''
+)

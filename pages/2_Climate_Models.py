@@ -417,3 +417,125 @@ st.markdown(
         - **[Oceanic Niño Index](https://ggweather.com/enso/oni.htm)**
         '''
 )
+
+
+def data5():
+        # Setup the Open-Meteo API client with cache and retry on error
+        cache_session = requests_cache.CachedSession('.cache', expire_after = -1)
+        retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
+        openmeteo = openmeteo_requests.Client(session = retry_session)
+        
+        # Make sure all required weather variables are listed here
+        # The order of variables in hourly or daily is important to assign them correctly below
+        url = "https://archive-api.open-meteo.com/v1/archive"
+        params = {
+        	"latitude": 52.25,
+        	"longitude": 5.75,
+        	"start_date": "2000-01-02",
+        	"end_date": "2024-09-19",
+        	"hourly": ["precipitation", "rain"],
+        	"daily": ["temperature_2m_mean", "precipitation_sum", "rain_sum", "snowfall_sum", "precipitation_hours"],
+        	"timezone": "auto"
+        }
+        responses = openmeteo.weather_api(url, params=params)
+        
+        # Process first location. Add a for-loop for multiple locations or weather models
+        response = responses[0]
+        
+        # Process hourly data. The order of variables needs to be the same as requested.
+        hourly = response.Hourly()
+        hourly_precipitation = hourly.Variables(0).ValuesAsNumpy()
+        hourly_rain = hourly.Variables(1).ValuesAsNumpy()
+        
+        hourly_data = {"date": pd.date_range(
+        	start = pd.to_datetime(hourly.Time(), unit = "s", utc = True),
+        	end = pd.to_datetime(hourly.TimeEnd(), unit = "s", utc = True),
+        	freq = pd.Timedelta(seconds = hourly.Interval()),
+        	inclusive = "left"
+        )}
+        hourly_data["precipitation"] = hourly_precipitation
+        hourly_data["rain"] = hourly_rain
+        
+        hourly_dataframe = pd.DataFrame(data = hourly_data)
+        
+        # Process daily data. The order of variables needs to be the same as requested.
+        daily = response.Daily()
+        daily_temperature_2m_mean = daily.Variables(0).ValuesAsNumpy()
+        daily_precipitation_sum = daily.Variables(1).ValuesAsNumpy()
+        daily_rain_sum = daily.Variables(2).ValuesAsNumpy()
+        daily_snowfall_sum = daily.Variables(3).ValuesAsNumpy()
+        daily_precipitation_hours = daily.Variables(4).ValuesAsNumpy()
+        
+        daily_data = {"date": pd.date_range(
+        	start = pd.to_datetime(daily.Time(), unit = "s", utc = True),
+        	end = pd.to_datetime(daily.TimeEnd(), unit = "s", utc = True),
+        	freq = pd.Timedelta(seconds = daily.Interval()),
+        	inclusive = "left"
+        )}
+        daily_data["temperature_2m_mean"] = daily_temperature_2m_mean
+        daily_data["precipitation_sum"] = daily_precipitation_sum
+        daily_data["rain_sum"] = daily_rain_sum
+        daily_data["snowfall_sum"] = daily_snowfall_sum
+        daily_data["precipitation_hours"] = daily_precipitation_hours
+        
+        return pd.DataFrame(data = daily_data)
+daily_dataframe = data5()
+
+# Drop rows from daily data with NaT in 'date' if there are any
+data = daily_dataframe.dropna(subset=['date'])
+
+# set 'date' column to proper format, filter a new column holding the year and numeric month.
+daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'])
+daily_dataframe['year'] = daily_dataframe['date'].dt.year
+daily_dataframe['month'] = daily_dataframe['date'].dt.month
+#creates a list of unique years from the 'year' column, and determines start and end year
+year_list = daily_dataframe['year'].unique()
+start_year = int(year_list.min())
+end_year = int(year_list.max())
+
+# Create a slider for year selection, using start_year and end_year as the limits
+year_selection = st.slider("Select a year", start_year, end_year, value=start_year)
+
+# Create a dropdown for month selection, with options being an "all months" alongside named months determined by value, i.e. month 10 = 'october'
+month_options = ['All Months'] + [month_name[i] for i in range(1, 13)]
+month_selection = st.selectbox("Select a month", month_options)
+
+# Filter based on the selected year
+filtered_data = daily_dataframe[daily_dataframe['year'] == year_selection]
+
+# Further filter based on selected month
+if month_selection != 'All Months':
+    month_selection_index = month_options.index(month_selection)
+    filtered_data = filtered_data[filtered_data['month'] == month_selection_index]
+
+# Melt the DataFrame to show full precipitation in both rain and snow
+melted_data = pd.melt(filtered_data, id_vars='date', value_vars=['rain_sum', 'snowfall_sum'],
+                       var_name='precipitation_type', value_name='amount')
+
+# Create a bar plot based on the melted dataframe, showing total rain and snow on each day.
+# Create the bar plot
+fig = px.bar(melted_data, 
+              x='date', 
+              y='amount', 
+              color='precipitation_type', 
+              title=f'Total rainfall for {year_selection} {month_selection if month_selection != "All Months" else ""}',
+              labels={'amount': 'Sum of rainfall (mm)', 'date': 'Date'},
+              color_discrete_sequence=px.colors.qualitative.Set1)
+
+# Update x-axis ticks based on the month selection
+if month_selection == 'All Months':
+    fig.update_xaxes(
+        dtick="M1",  # One tick per month
+        tickformat="%Y-%m",  # Format as YYYY-MM
+        tickangle=90  # Rotate x-axis labels
+    )
+else:
+    fig.update_xaxes(
+        dtick="D1",  # One tick per day
+        tickformat="%Y-%m-%d",  # Format as YYYY-MM-DD
+        tickangle=90  # Rotate x-axis labels
+    )
+
+# Show the plot
+fig.update_layout(legend_title_text='Precipitation Type')  # Add legend title
+st.plotly_chart(fig)

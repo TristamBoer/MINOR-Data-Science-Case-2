@@ -408,7 +408,10 @@ fig = px.bar(monthly_dataframe,
              labels={'rain_sum': 'Som van de regen (mm)', 'month_name': 'Maand'},
              color_discrete_sequence=px.colors.qualitative.Set1)
 
-fig.update_layout(legend_title_text='Oceanic Niño Index')
+fig.update_layout(
+        barmode='group',
+        legend_title_text='Oceanic Niño Index'
+)
 
 st.plotly_chart(fig)
 

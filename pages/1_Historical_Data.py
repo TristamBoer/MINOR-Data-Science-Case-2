@@ -222,7 +222,7 @@ fig.add_trace(go.Scatter(x=forecast_data['ds'], y=forecast_data['y'],
 # Plot the forecasted data ('yhat' is the predicted value)
 fig.add_trace(go.Scatter(x=predictions['ds'], y=predictions['yhat'],
                          mode='lines', name='Forecasted Data',
-                         line=dict(color='red')))
+                         line=dict(color='green')))
 
 # Add the confidence intervals (yhat_lower and yhat_upper)
 fig.add_trace(go.Scatter(
@@ -233,7 +233,7 @@ fig.add_trace(go.Scatter(
 fig.add_trace(go.Scatter(
     x=predictions['ds'], y=predictions['yhat_lower'],
     fill='tonexty', name='Confidence Interval',
-    line=dict(width=0), fillcolor='rgba(255, 0, 0, 0.5)', showlegend=True))
+    line=dict(width=0), fillcolor='rgba(0,100,80,0.2)', showlegend=True))
 
 # Streamlit slider for date range selection
 min_date = pd.to_datetime(predictions['ds']).min().date()

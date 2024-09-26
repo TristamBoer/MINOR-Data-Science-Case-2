@@ -8,4 +8,4 @@ retry_requests
 matplotlib
 numpy
 prophet
-sklearn
+scikit-learn

@@ -15,7 +15,7 @@ def page_config():
                           page_title="Climate Models")
 page_config()
 
-
+uploaded_file = st.file_uploader("result_shivano.json", type="json")
 
 @st.cache_data # Zorgt ervoor dat de dataframe altijd geladen is
 def data1():

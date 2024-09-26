@@ -8,3 +8,4 @@ retry_requests
 matplotlib
 numpy
 prophet
+sklearn

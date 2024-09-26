@@ -16,6 +16,7 @@ def page_config():
 page_config()
 
 
+
 @st.cache_data # Zorgt ervoor dat de dataframe altijd geladen is
 def data1():
     with open('pages/result_shivano.json', 'r') as file:
@@ -94,6 +95,8 @@ show_knmi = st.checkbox("Show KNMI Yearly Avg Max Temperature", value=True)
 show_meteo = st.checkbox("Show Open-Meteo Yearly Avg Max Temperature", value=True)
 show_avg = st.checkbox("Show Average Temperature", value=True)
 show_predictions = st.checkbox("Show Prediction (2024-2040)", value=True)
+
+st.header('KNMI & OpenMeteo temperatuur voorspelling')
 
 # Create the plotly figure
 fig = go.Figure()
@@ -217,6 +220,8 @@ august_data['max_temperature_2m'] = august_data['temperature_2m_mean'] + 5  # Ex
 
 # Define cities
 cities = august_data['city'].unique()
+
+st.header('Temperatuur voorspelling in verschillende steden')
 
 # Create a Plotly figure
 fig = go.Figure()
@@ -388,6 +393,10 @@ monthly_dataframe['Oceanic Niño Index'] = monthly_dataframe['date'].dt.year.ast
 
 colors = px.colors.qualitative.Set1
 
+Temperatuur bij "La Niña" en "El Niño"
+
+st.header("Temperatuur bij 'La Niña' en 'El Niño'")
+
 fig = px.scatter(
     data_frame=yearly_dataframe, x='year', y='temperature_2m_mean',
     trendline='ols',
@@ -404,6 +413,8 @@ fig.update_layout(
     )
 
 st.plotly_chart(fig)
+
+st.header("Regen bij 'La Niña' en 'El Niño'")
 
 fig = px.bar(monthly_dataframe, 
                   x='month_name', 
@@ -428,6 +439,7 @@ st.markdown(
 )
 
 
+@st.cache_data
 def data5():
         # Setup the Open-Meteo API client with cache and retry on error
         cache_session = requests_cache.CachedSession('.cache', expire_after = -1)
@@ -496,16 +508,12 @@ month_name = [
     "July", "August", "September", "October", "November", "December"
 ]
 
-# Assuming daily_dataframe is already defined and contains a 'date' column
-# Drop rows from daily data with NaT in 'date' if there are any
 data = daily_dataframe.dropna(subset=['date'])
 
-# Set 'date' column to proper format, filter a new column holding the year and numeric month.
 daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'])
 daily_dataframe['year'] = daily_dataframe['date'].dt.year
 daily_dataframe['month'] = daily_dataframe['date'].dt.month
 
-# Create a list of unique years from the 'year' column, and determine start and end year
 year_list = daily_dataframe['year'].unique()
 start_year = int(year_list.min())
 end_year = int(year_list.max())
@@ -528,6 +536,8 @@ if month_selection != 'All Months':
 # Melt the DataFrame to show full precipitation in both rain and snow
 melted_data = pd.melt(filtered_data, id_vars='date', value_vars=['rain_sum', 'snowfall_sum'],
                        var_name='precipitation_type', value_name='amount')
+
+st.header('Gevallen regen per jaar & maand')
 
 # Create a bar plot based on the melted dataframe, showing total rain and snow on each day.
 fig = px.bar(melted_data, 
@@ -553,5 +563,5 @@ else:
     )
 
 # Show the plot
-fig.update_layout(legend_title_text='Precipitation Type')  # Add legend title
+fig.update_layout(legend_title_text='Precipitation Type')
 st.plotly_chart(fig)

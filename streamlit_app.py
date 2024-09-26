@@ -33,8 +33,8 @@ st.write(
         '''
         De combinatie van de Openmeteo API en KNMI-data zorgen voor mengsel een van gedetailleerde lokale en globale gegevens.  
         Binnen deze dashboard is er gekeken naar twee verschillende onderdelen van de OpenMeteo API:  
-        - ** Historical Weather **  
-        - ** Climate Change **  
+        - **Historical Weather**  
+        - **Climate Change**  
         '''
 )
 

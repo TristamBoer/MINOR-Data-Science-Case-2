@@ -132,7 +132,7 @@ st.text("")
 col1, col2, col3 = st.columns([1, 1, 4])
 
 with col1:
-    st.header("Plotting Variable 1")
+    st.checkbox("Plotting Variable 1")
     variable1 = st.selectbox("Selecteer eerste variabel:", [
 	'date', 'temperature_2m_mean', 'apparent_temperature_mean',
 	'daylight_duration', 'sunshine_duration', 'precipitation_sum',

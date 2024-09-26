@@ -81,14 +81,15 @@ def data():
 daily_dataframe = data()
 
 st.markdown(
-	'''
-	Binnen de Historical Weather data worden de volgende onderwerpen besproken:
- 	- Uitleg DataFrame kolommen
-  	- Interactieve scatterplot visualisatie van DataFrame
-   	- Interactieve scatterplot op basis van wind directie
-    	- Voorspellend model voor gemiddelde temperatuur
- 	'''
-)
+	    '''  
+	    Binnen de Historical Weather data worden de volgende onderwerpen besproken:  
+	    - **Uitleg DataFrame kolommen**  
+	    - **Interactieve scatterplot visualisatie van DataFrame**   
+	    - **Interactieve scatterplot op basis van wind directie**  
+	    - **Voorspellend model voor gemiddelde temperatuur**  
+	    '''
+	)
+
 
 
 st.header('Historical Weather DataFrame')

@@ -384,6 +384,12 @@ monthly_summary = (daily_dataframe.resample('M').agg(
 # Create a month name column for better labeling
 monthly_summary['month_name'] = monthly_summary['date'].dt.strftime('%B')
 
+# Calculate standard error
+monthly_summary['rain_se'] = daily_dataframe.resample('M').agg(
+    rain_se=('rain_sum', lambda x: x.std() / (len(x) ** 0.5))
+)['rain_se'].values
+
+
 # Add Oceanic Niño Index column based on year
 la_nina_years = ['1954', '1955', '1964', '1970', '1971', '1973', '1974', 
                  '1975', '1983', '1984', '1988', '1995', '1998', '1999', 
@@ -429,7 +435,7 @@ fig = px.bar(monthly_summary,
               title='Som van de regen per maand met Oceanic Niño Index',
               labels={'rain_sum': 'Som van de regen (mm)', 'month_name': 'Maand'},
               color_discrete_sequence=px.colors.qualitative.Set1,
-              error_y='rain_std')
+              error_y='rain_se')
 # Set barmode to 'group' for non-stacked bars
 fig.update_layout(
     barmode='group',

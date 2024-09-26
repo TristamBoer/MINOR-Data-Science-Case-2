@@ -269,3 +269,109 @@ fig.update_layout(
 
 # Show the figure in Streamlit
 st.plotly_chart(fig)
+
+
+
+@st.cache_data
+def data4():
+        # Setup the Open-Meteo API client with cache and retry on error
+        cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
+        retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
+        openmeteo = openmeteo_requests.Client(session = retry_session)
+        
+        # Make sure all required weather variables are listed here
+        # The order of variables in hourly or daily is important to assign them correctly below
+        url = "https://climate-api.open-meteo.com/v1/climate"
+        params = {
+        	"latitude": 52.37403,
+        	"longitude": 4.88969,
+        	"start_date": "1950-01-01",
+        	"end_date": "2023-12-31",
+        	"models": "EC_Earth3P_HR",
+        	"daily": ["temperature_2m_mean", "temperature_2m_max", "temperature_2m_min", "rain_sum"]
+        }
+        responses = openmeteo.weather_api(url, params=params)
+        
+        # Process first location. Add a for-loop for multiple locations or weather models
+        response = responses[0]
+        
+        # Process daily data. The order of variables needs to be the same as requested.
+        daily = response.Daily()
+        daily_temperature_2m_mean = daily.Variables(0).ValuesAsNumpy()
+        daily_temperature_2m_max = daily.Variables(1).ValuesAsNumpy()
+        daily_temperature_2m_min = daily.Variables(2).ValuesAsNumpy()
+        daily_rain_sum = daily.Variables(3).ValuesAsNumpy()
+        
+        daily_data = {"date": pd.date_range(
+        	start = pd.to_datetime(daily.Time(), unit = "s", utc = True),
+        	end = pd.to_datetime(daily.TimeEnd(), unit = "s", utc = True),
+        	freq = pd.Timedelta(seconds = daily.Interval()),
+        	inclusive = "left"
+        )}
+        daily_data["temperature_2m_mean"] = daily_temperature_2m_mean
+        daily_data["temperature_2m_max"] = daily_temperature_2m_max
+        daily_data["temperature_2m_min"] = daily_temperature_2m_min
+        daily_data["rain_sum"] = daily_rain_sum
+        
+        return pd.DataFrame(data = daily_data)
+daily_dataframe = data4()
+
+daily_dataframe.set_index('date', inplace=True)
+
+# Resample de data per jaar en bereken de gemiddelde waarden
+yearly_dataframe = daily_dataframe.resample('Y').mean()
+
+yearly_dataframe.reset_index(inplace=True)
+yearly_dataframe['year'] = yearly_dataframe['date'].dt.year  # Extra kolom met alleen het jaar
+
+daily_dataframe = pd.DataFrame(data=daily_data)
+
+daily_dataframe.set_index('date', inplace=True)
+
+# Resample de data per maand en bereken de gemiddelde waarden
+monthly_dataframe = daily_dataframe.resample('M').mean()
+
+# Zet de index (datum) terug als een kolom voor visualisatie
+monthly_dataframe.reset_index(inplace=True)
+
+monthly_dataframe['month'] = monthly_dataframe['date'].dt.month
+
+# Optioneel: Voeg een kolom toe voor de maandnaam
+monthly_dataframe['month_name'] = monthly_dataframe['date'].dt.strftime('%B')
+
+# Lijst met La Niña jaren als strings
+la_nina_years = ['1954', '1955', '1964', '1970', '1971', '1973', '1974', '1975', '1983', '1984', 
+                 '1988', '1995', '1998', '1999', '2000', '2005', '2007', '2008', '2010', 
+                 '2011', '2016', '2017', '2020', '2021', '2022']
+
+
+# Toevoegen van een nieuwe kolom met 'La Niña' of 'El Niño' op basis van de jaarcontrole in yearly_dataframe
+yearly_dataframe['Oceanic Niño Index'] = yearly_dataframe['year'].astype(str).isin(la_nina_years).map({True: 'La Niña', False: 'El Niño'})
+
+# Toevoegen van een nieuwe kolom met 'La Niña' of 'El Niño' op basis van de jaarcontrole in monthly_dataframe
+monthly_dataframe['Oceanic Niño Index'] = monthly_dataframe['date'].dt.year.astype(str).isin(la_nina_years).map({True: 'La Niña', False: 'El Niño'})
+
+colors = px.colors.qualitative.Set1
+
+fig = px.scatter(
+    data_frame=yearly_dataframe, x='year', y='temperature_2m_mean',
+    trendline='ols',
+    marginal_x='histogram', marginal_y='histogram',
+    color='Oceanic Niño Index', color_discrete_sequence=colors, height=800,
+    title='Gemiddelde tempratuur per jaar met trendline'
+    )
+
+fig.update_layout(
+    yaxis_title='Gemiddelde tempratuur in graden celsius voor Amsterdam',
+    xaxis_title='Jaar',
+    title_font_size=18,
+    legend_title_text='Oceanic Niño Index'
+    )
+
+st.plotly_chart(fig)
+
+st.markdown(
+        '''
+        - **[Oceanic Niño Index](https://ggweather.com/enso/oni.htm)**
+        '''
+)

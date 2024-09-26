@@ -481,14 +481,22 @@ def data5():
         return pd.DataFrame(data = daily_data)
 daily_dataframe = data5()
 
+month_name = [
+    "",  # Index 0 is unused; placeholders for 1-indexed months
+    "January", "February", "March", "April", "May", "June", 
+    "July", "August", "September", "October", "November", "December"
+]
+
+# Assuming daily_dataframe is already defined and contains a 'date' column
 # Drop rows from daily data with NaT in 'date' if there are any
 data = daily_dataframe.dropna(subset=['date'])
 
-# set 'date' column to proper format, filter a new column holding the year and numeric month.
+# Set 'date' column to proper format, filter a new column holding the year and numeric month.
 daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'])
 daily_dataframe['year'] = daily_dataframe['date'].dt.year
 daily_dataframe['month'] = daily_dataframe['date'].dt.month
-#creates a list of unique years from the 'year' column, and determines start and end year
+
+# Create a list of unique years from the 'year' column, and determine start and end year
 year_list = daily_dataframe['year'].unique()
 start_year = int(year_list.min())
 end_year = int(year_list.max())
@@ -496,7 +504,7 @@ end_year = int(year_list.max())
 # Create a slider for year selection, using start_year and end_year as the limits
 year_selection = st.slider("Select a year", start_year, end_year, value=start_year)
 
-# Create a dropdown for month selection, with options being an "all months" alongside named months determined by value, i.e. month 10 = 'october'
+# Create a dropdown for month selection, with options being "All Months" alongside named months
 month_options = ['All Months'] + [month_name[i] for i in range(1, 13)]
 month_selection = st.selectbox("Select a month", month_options)
 
@@ -513,7 +521,6 @@ melted_data = pd.melt(filtered_data, id_vars='date', value_vars=['rain_sum', 'sn
                        var_name='precipitation_type', value_name='amount')
 
 # Create a bar plot based on the melted dataframe, showing total rain and snow on each day.
-# Create the bar plot
 fig = px.bar(melted_data, 
               x='date', 
               y='amount', 

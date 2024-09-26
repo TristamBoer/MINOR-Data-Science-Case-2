@@ -82,7 +82,7 @@ daily_dataframe = data()
 
 st.markdown(
 	    '''  
-	    Binnen de Historical Weather data worden de volgende onderwerpen op volgorde besproken:  
+	    Binnen de Historical Weather Data API worden de volgende onderwerpen op volgorde besproken:  
 	    - **Uitleg DataFrame kolommen**  
 	    - **Interactieve scatterplot visualisatie van DataFrame**   
 	    - **Interactieve scatterplot op basis van windrichting**  

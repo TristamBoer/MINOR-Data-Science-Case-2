@@ -268,3 +268,5 @@ def prediction():
 	fig.update_xaxes(range=[str(start_date), str(end_date)])
 	
 	return st.plotly_chart(fig)
+
+prediction_fig = prediction()

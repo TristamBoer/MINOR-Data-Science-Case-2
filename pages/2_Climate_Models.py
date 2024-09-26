@@ -103,13 +103,13 @@ model.fit(X, y)
 future_years = pd.DataFrame({'year': np.arange(2024, 2041)})
 future_predictions = model.predict(future_years)
 
+st.header('KNMI & OpenMeteo temperatuur voorspelling')
+
 # Streamlit checkboxes for toggling each trace
 show_knmi = st.checkbox("Show KNMI Yearly Avg Max Temperature", value=True)
 show_meteo = st.checkbox("Show Open-Meteo Yearly Avg Max Temperature", value=True)
 show_avg = st.checkbox("Show Average Temperature", value=True)
 show_predictions = st.checkbox("Show Prediction (2024-2040)", value=True)
-
-st.header('KNMI & OpenMeteo temperatuur voorspelling')
 
 # Create the plotly figure
 fig = go.Figure()

@@ -6,6 +6,7 @@ from retry_requests import retry
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 import plotly_express as px
+from prophet import Prophet
 
 st.set_page_config(page_title='Historical Weather Data')
 
@@ -200,42 +201,54 @@ st.plotly_chart(fig)
 
 
 
-# fig = go.Figure()
+forecast_data = daily_dataframe.rename(columns={'date' : 'ds',
+                                                'temperature_2m_mean' : 'y'})
 
-# for x in ['daylight_duration', 'precipitation_sum', 'precipitation_hours']:
-#     fig.add_trace(go.Scatter(
-#         x=daily_dataframe[x], y=daily_dataframe['temperature_2m_mean'],
-#         mode='markers', name=x
-#     ))
+model = Prophet()
+model.fit(forecast_data)
+forecast = model.make_future_dataframe(periods=730) # Voorspelling van twee jaar
+predictions = model.predict(forecast)
 
-# dropdown_buttons = [
-#     {'label': 'daylight_duration', 'method': 'update',
-#      'args': [{'visible': [True, False, False]},
-#               {'title': 'Daylight Duration'}]},
-    
-#     {'label': 'sunshine_duration', 'method': 'update',
-#      'args': [{'visible': [False, True, False]},
-#               {'title': 'Precipitation Sum'}]},    
-    
-#     {'label': 'precipitation_hours', 'method': 'update',
-#      'args': [{'visible': [False, False, True]},
-#               {'title': 'Precipitation Hours'}]},        
-# ]
+fig = go.Figure()
 
-# fig.update_layout(
-#     updatemenus=[{
-#         'type': 'dropdown',
-#         'x': 1.1, 'y': 1.15,
-#         'showactive': True,
-#         'active': 0,
-#         'buttons': dropdown_buttons
-#     }],
-#     title={'text': 'Gemiddelde temperatuur in Amsterdam'},
-#     xaxis={'title': {'text': 'Tijd [uur]'}},               
-#     yaxis={'title': {'text': 'Temperatuur [°C]'}},         
-# )
+# Plot the actual data
+fig.add_trace(go.Scatter(x=forecast_data['ds'], y=forecast_data['y'],
+                         mode='lines', name='Actual Data',
+                         line=dict(color='blue')))
 
-# fig.data[1].visible=False
-# fig.data[2].visible=False
+# Plot the forecasted data ('yhat' is the predicted value)
+fig.add_trace(go.Scatter(x=predictions['ds'], y=predictions['yhat'],
+                         mode='lines', name='Forecasted Data',
+                         line=dict(color='green')))
 
-# st.plotly_chart(fig, use_container_width=True)
+# Add the confidence intervals (yhat_lower and yhat_upper)
+fig.add_trace(go.Scatter(
+    x=predictions['ds'], y=predictions['yhat_upper'],
+    mode='lines', name='Upper Confidence Interval',
+    line=dict(width=0), showlegend=False))
+
+fig.add_trace(go.Scatter(
+    x=predictions['ds'], y=predictions['yhat_lower'],
+    fill='tonexty', name='Confidence Interval',
+    line=dict(width=0), fillcolor='rgba(0,100,80,0.2)', showlegend=True))
+
+# Streamlit slider for date range selection
+min_date = pd.to_datetime(forecast_data['ds']).min().date()
+max_date = pd.to_datetime(forecast_data['ds']).max().date()
+
+# Create a date slider in Streamlit
+start_date, end_date = st.slider('Select date range:',
+                                 min_value=min_date, max_value=max_date,
+                                 value=(min_date, max_date), format="YYYY-MM-DD")
+
+# Update layout and axis ranges
+fig.update_layout(title='Temperature Forecast',
+                  xaxis_title='Date',
+                  yaxis_title='Temperature (°C)',
+                  title_font_size=18)
+
+# Filter the data based on slider date selection
+fig.update_xaxes(range=[str(start_date), str(end_date)])
+
+# Display the plot with the slider filter
+st.plotly_chart(fig)

@@ -133,3 +133,66 @@ fig.update_layout(
 
 # Display the plot
 st.plotly_chart(fig)
+
+
+
+
+# Assume august_data is already loaded with necessary fields
+# Generate some example min/max temperature data for August (replace with actual data)
+august_data['min_temperature_2m'] = august_data['temperature_2m_mean'] - 5  # Example for min temp
+august_data['max_temperature_2m'] = august_data['temperature_2m_mean'] + 5  # Example for max temp
+
+# Define cities
+cities = august_data['city'].unique()
+
+# Create a Plotly figure
+fig = go.Figure()
+
+# Define function for adding traces (min/max) and predictions
+def add_temperature_traces(fig, city, visible_min=False, visible_max=False):
+    city_august_data = august_data[(august_data['city'] == city) & (august_data['year'] <= 2024)]
+
+    # Add historical data for min temperature
+    fig.add_trace(go.Scatter(x=city_august_data['year'], y=city_august_data['min_temperature_2m'], mode='markers',
+                             name=f'Historical Min Temp {city}', visible=visible_min))
+    
+    # Add historical data for max temperature
+    fig.add_trace(go.Scatter(x=city_august_data['year'], y=city_august_data['max_temperature_2m'], mode='markers',
+                             name=f'Historical Max Temp {city}', visible=visible_max))
+    
+    # Add prediction for min temperature (2024-2050)
+    future_years, predicted_min = predict_temperature(city_august_data, 'min_temperature_2m')
+    fig.add_trace(go.Scatter(x=future_years, y=predicted_min, mode='lines',
+                             name=f'Predicted Min Temp {city} (2024-2050)', visible=visible_min))
+    
+    # Add prediction for max temperature (2024-2050)
+    future_years, predicted_max = predict_temperature(city_august_data, 'max_temperature_2m')
+    fig.add_trace(go.Scatter(x=future_years, y=predicted_max, mode='lines',
+                             name=f'Predicted Max Temp {city} (2024-2050)', visible=visible_max))
+
+# Initial visibility setup for each city and temperature type (Min Temp of Berlin by default)
+for city in cities:
+    add_temperature_traces(fig, city, visible_min=(city == 'Berlin'), visible_max=False)
+
+# Streamlit Radio Buttons for City Selection (Single Selection)
+selected_city = st.radio("Select City", options=cities, index=0)
+
+# Streamlit Radio Buttons for Temperature Type Selection (Single Selection)
+selected_temp_type = st.radio("Select Temperature Type", options=["Min Temp", "Max Temp"], index=0)
+
+# Update the visibility of the traces based on the selected city and temperature type
+for i, city in enumerate(cities):
+    is_selected_city = (city == selected_city)
+    for j in range(4):  # Each city has 4 traces: Min historical, Min predicted, Max historical, Max predicted
+        fig.data[i * 4 + j].visible = (selected_temp_type == "Min Temp" and is_selected_city and j in [0, 2]) or \
+                                      (selected_temp_type == "Max Temp" and is_selected_city and j in [1, 3])
+
+# Update the layout
+fig.update_layout(
+    title=f"{selected_temp_type} Predictions for {selected_city} (2024-2050)",
+    xaxis_title="Year",
+    yaxis_title="Temperature (°C)"
+)
+
+# Show the figure in Streamlit
+st.plotly_chart(fig)

@@ -354,6 +354,12 @@ daily_dataframe = data4()
 # Zorg ervoor dat 'date' de index is
 daily_dataframe.set_index('date', inplace=True)
 
+# Convert columns to numeric, ensuring all values can be averaged (handling invalid data)
+daily_dataframe["temperature_2m_mean"] = pd.to_numeric(daily_dataframe["temperature_2m_mean"], errors="coerce")
+daily_dataframe["temperature_2m_max"] = pd.to_numeric(daily_dataframe["temperature_2m_max"], errors="coerce")
+daily_dataframe["temperature_2m_min"] = pd.to_numeric(daily_dataframe["temperature_2m_min"], errors="coerce")
+daily_dataframe["rain_sum"] = pd.to_numeric(daily_dataframe["rain_sum"], errors="coerce")
+
 # Resample de data per jaar en bereken de gemiddelde waarden
 yearly_dataframe = daily_dataframe.resample('Y').mean()
 

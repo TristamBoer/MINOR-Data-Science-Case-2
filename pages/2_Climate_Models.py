@@ -401,16 +401,17 @@ fig.update_layout(
 st.plotly_chart(fig)
 
 fig = px.bar(monthly_dataframe, 
-             x='month_name', 
-             y='rain_sum', 
-             color='Oceanic Niño Index',
-             title='Som van de regen per maand met Oceanic Niño Index',
-             labels={'rain_sum': 'Som van de regen (mm)', 'month_name': 'Maand'},
-             color_discrete_sequence=px.colors.qualitative.Set1)
+                  x='month_name', 
+                  y='rain_sum', 
+                  color='Oceanic Niño Index',
+                  title='Som van de regen per maand met Oceanic Niño Index',
+                  labels={'rain_sum': 'Som van de regen (mm)', 'month_name': 'Maand'},
+                  color_discrete_sequence=px.colors.qualitative.Set1)
 
+# Set barmode to 'group' for non-stacked bars
 fig.update_layout(
-        barmode='group',
-        legend_title_text='Oceanic Niño Index'
+    barmode='group',
+    legend_title_text='Oceanic Niño Index'
 )
 
 st.plotly_chart(fig)

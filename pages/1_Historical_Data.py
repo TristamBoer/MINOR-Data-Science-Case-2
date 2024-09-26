@@ -61,7 +61,7 @@ daily_data["rain_sum"] = daily_rain_sum
 daily_data["snowfall_sum"] = daily_snowfall_sum
 daily_data["precipitation_hours"] = daily_precipitation_hours
 daily_data["wind_speed_10m_max"] = daily_wind_speed_10m_max
-daily_data["wind_gusts_10m_max"] = daily_wind_gusts_10m_maxe
+daily_data["wind_gusts_10m_max"] = daily_wind_gusts_10m_max
 daily_data["wind_direction_10m_dominant"] = daily_wind_direction_10m_dominant
 
 daily_dataframe = pd.DataFrame(data=daily_data)
@@ -70,26 +70,6 @@ daily_dataframe.index = daily_dataframe['date']
 daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'], yearfirst=True)
 daily_dataframe['daylight_duration'] = (daily_dataframe['daylight_duration'] / 60) / 60
 daily_dataframe['sunshine_duration'] = (daily_dataframe['sunshine_duration'] / 60) / 60
-
-def categorize_wind_direction(degrees):
-    if (degrees >= 337.5) or (degrees < 22.5):
-        return 'North'
-    elif 22.5 <= degrees < 67.5:
-        return 'North-East'
-    elif 67.5 <= degrees < 112.5:
-        return 'East'
-    elif 112.5 <= degrees < 157.5:
-        return 'South-East'
-    elif 157.5 <= degrees < 202.5:
-        return 'South'
-    elif 202.5 <= degrees < 247.5:
-        return 'South-West'
-    elif 247.5 <= degrees < 292.5:
-        return 'West'
-    elif 292.5 <= degrees < 337.5:
-        return 'North-West'
-
-daily_dataframe['wind_direction_category'] = daily_dataframe['wind_direction_10m_dominant'].apply(categorize_wind_direction)
 
 st.markdown(
 	'''
@@ -129,8 +109,6 @@ with col1:
 	      *Bevat de maximale windvlaag op een dag, in km/u.*  
 	    - **wind_direction_10m_dominant:**  
 	      *Bevat de dominante windrichting op een dag, in graden.*
-       	    - **wind_direction_category**
-	      *Bevat de richting van de wind.*
 	    '''
 	)
 
@@ -181,15 +159,32 @@ with col3:
         st.plotly_chart(fig)
 
 
+def categorize_wind_direction(degrees):
+    if (degrees >= 337.5) or (degrees < 22.5):
+        return 'North'
+    elif 22.5 <= degrees < 67.5:
+        return 'North-East'
+    elif 67.5 <= degrees < 112.5:
+        return 'East'
+    elif 112.5 <= degrees < 157.5:
+        return 'South-East'
+    elif 157.5 <= degrees < 202.5:
+        return 'South'
+    elif 202.5 <= degrees < 247.5:
+        return 'South-West'
+    elif 247.5 <= degrees < 292.5:
+        return 'West'
+    elif 292.5 <= degrees < 337.5:
+        return 'North-West'
 
-# Create wind direction slider in Streamlit
+daily_dataframe['wind_direction_category'] = daily_dataframe['wind_direction_10m_dominant'].apply(categorize_wind_direction)
+
+
 wind_direction_options = daily_dataframe['wind_direction_category'].unique()
 selected_wind_direction = st.selectbox('Select Wind Direction', options=wind_direction_options)
 
-# Filter the dataframe based on selected wind direction
 filtered_df = daily_dataframe[daily_dataframe['wind_direction_category'] == selected_wind_direction]
 
-# Create the scatter plot with filtered data
 fig = px.scatter(data_frame=filtered_df,
                  x='date', y='wind_speed_10m_max',
                  color='wind_direction_category')
@@ -201,7 +196,6 @@ fig.update_layout(
     title_font_size=18,
 )
 
-# Display the plot
 st.plotly_chart(fig)
 
 

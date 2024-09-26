@@ -85,7 +85,7 @@ st.markdown(
 	    Binnen de Historical Weather data worden de volgende onderwerpen op volgorde besproken:  
 	    - **Uitleg DataFrame kolommen**  
 	    - **Interactieve scatterplot visualisatie van DataFrame**   
-	    - **Interactieve scatterplot op basis van wind directie**  
+	    - **Interactieve scatterplot op basis van windrichting**  
 	    - **Voorspellend model voor gemiddelde temperatuur**  
 	    '''
 	)
@@ -132,10 +132,10 @@ with col2:
 
 st.text("")
 
+st.header('Interactieve scatterplot van DataFrame')
 col1, col2, col3 = st.columns([1, 1, 4])
 
 with col1:
-    st.header("Plotting Variable 1")
     variable1 = st.selectbox("Selecteer eerste variabel:", [
 	'date', 'temperature_2m_mean', 'apparent_temperature_mean',
 	'daylight_duration', 'sunshine_duration', 'precipitation_sum',
@@ -145,7 +145,6 @@ with col1:
 			     
 
 with col2:
-    st.header("Plotting Variable 2")
     variable2 = st.selectbox("Selecteer tweede variabel:", [
 	'date', 'temperature_2m_mean', 'apparent_temperature_mean',
 	'daylight_duration', 'sunshine_duration', 'precipitation_sum',
@@ -155,8 +154,6 @@ with col2:
 
 
 with col3:
-    st.header("Plot")
-    
     if variable1 and variable2:
         fig = px.scatter(daily_dataframe, x=variable1, y=variable2, title=f'{variable1} vs {variable2}')
         st.plotly_chart(fig)
@@ -184,6 +181,8 @@ daily_dataframe['wind_direction_category'] = daily_dataframe['wind_direction_10m
 
 
 wind_direction_options = daily_dataframe['wind_direction_category'].unique()
+
+st.header('Interactieve scatterplot windrichting')
 
 col1, col2 = st.columns(2)
 
@@ -213,6 +212,7 @@ fig.update_layout(
 
 st.plotly_chart(fig)
 
+st.header('Voorspellend model gemiddelde temperatuur')
 @st.cache_resource
 def prediction():
     forecast_data = daily_dataframe.rename(columns={'date': 'ds', 'temperature_2m_mean': 'y'})

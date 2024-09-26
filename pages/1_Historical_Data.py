@@ -4,7 +4,6 @@ import openmeteo_requests
 import requests_cache
 from retry_requests import retry
 import plotly.graph_objects as go
-import matplotlib.pyplot as plt
 import plotly_express as pxe
 import numpy as np
 np.float_ = np.float64
@@ -83,7 +82,7 @@ daily_dataframe = data()
 
 st.markdown(
 	'''
- De Openmeteo API bevat historical Weather Data. Met deze  
+	Binnen de Historical Weather data wordt eerst de dataframe verkend. Hierbij wordt verteld wat alle kolommen betekenen, daarbij is een interactieve plot gemaakt om te data te kunnen visualiseren.    
  	'''
 )
 

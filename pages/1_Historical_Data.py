@@ -223,50 +223,51 @@ st.plotly_chart(fig)
 
 @st.cache_resource
 def prediction():
-	forecast_data = daily_dataframe.rename(columns={'date' : 'ds',
-	                                                'temperature_2m_mean' : 'y'})
-	
-	model = Prophet()
-	model.fit(forecast_data)
-	forecast = model.make_future_dataframe(periods=730) # Voorspelling van twee jaar
-	predictions = model.predict(forecast)
-	
-	fig = go.Figure()
-	
-	fig.add_trace(go.Scatter(x=forecast_data['ds'], y=forecast_data['y'],
-	                         mode='markers', name='Actual Data',
-	                         line=dict(color='blue')))
-	
-	# Plot the forecasted data ('yhat' is the predicted value)
-	fig.add_trace(go.Scatter(x=predictions['ds'], y=predictions['yhat'],
-	                         mode='lines', name='Forecasted Data',
-	                         line=dict(color='green')))
-	
-	# Add the confidence intervals (yhat_lower and yhat_upper)
-	fig.add_trace(go.Scatter(
-	    x=predictions['ds'], y=predictions['yhat_upper'],
-	    mode='lines', name='Upper Confidence Interval',
-	    line=dict(width=0), showlegend=False))
-	
-	fig.add_trace(go.Scatter(
-	    x=predictions['ds'], y=predictions['yhat_lower'],
-	    fill='tonexty', name='Confidence Interval',
-	    line=dict(width=0), fillcolor='rgba(0,100,80,0.2)', showlegend=True))
-	
-	min_date = pd.to_datetime(predictions['ds']).min().date()
-	max_date = pd.to_datetime(predictions['ds']).max().date()
-	
-	start_date, end_date = st.slider('Select lengte datum:',
-	                                 min_value=min_date, max_value=max_date,
-	                                 value=(min_date, max_date), format="YYYY-MM-DD")
-	
-	fig.update_layout(title='Temperature Forecast',
-	                  xaxis_title='Date',
-	                  yaxis_title='Temperature (°C)',
-	                  title_font_size=18)
-	
-	fig.update_xaxes(range=[str(start_date), str(end_date)])
-	
-	return st.plotly_chart(fig)
+    forecast_data = daily_dataframe.rename(columns={'date': 'ds', 'temperature_2m_mean': 'y'})
+    
+    model = Prophet()
+    model.fit(forecast_data)
+    forecast = model.make_future_dataframe(periods=730)  # Voorspelling van twee jaar
+    predictions = model.predict(forecast)
+    
+    fig = go.Figure()
+    
+    fig.add_trace(go.Scatter(x=forecast_data['ds'], y=forecast_data['y'],
+                             mode='markers', name='Actual Data',
+                             line=dict(color='blue')))
+    
+    fig.add_trace(go.Scatter(x=predictions['ds'], y=predictions['yhat'],
+                             mode='lines', name='Forecasted Data',
+                             line=dict(color='green')))
+    
+    # Add confidence intervals
+    fig.add_trace(go.Scatter(
+        x=predictions['ds'], y=predictions['yhat_upper'],
+        mode='lines', name='Upper Confidence Interval',
+        line=dict(width=0), showlegend=False))
+    
+    fig.add_trace(go.Scatter(
+        x=predictions['ds'], y=predictions['yhat_lower'],
+        fill='tonexty', name='Confidence Interval',
+        line=dict(width=0), fillcolor='rgba(0,100,80,0.2)', showlegend=True))
+    
+    return fig, predictions['ds'].min(), predictions['ds'].max()
 
-prediction_fig = prediction()
+# Get the predictions and the date range
+fig, min_date, max_date = prediction()
+
+# Move the slider outside the cached function
+start_date, end_date = st.slider('Select lengte datum:',
+                                 min_value=min_date.date(), max_value=max_date.date(),
+                                 value=(min_date.date(), max_date.date()), format="YYYY-MM-DD")
+
+# Update the figure with the slider range
+fig.update_layout(title='Temperature Forecast',
+                  xaxis_title='Date',
+                  yaxis_title='Temperature (°C)',
+                  title_font_size=18)
+
+fig.update_xaxes(range=[str(start_date), str(end_date)])
+
+# Display the updated plot
+st.plotly_chart(fig)

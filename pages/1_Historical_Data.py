@@ -122,7 +122,7 @@ col1, col2, col3 = st.columns([1, 1, 4])
 
 with col1:
     st.header("Plotting Variable 1")
-    variable1 = st.selectbox("Select first variable:", [
+    variable1 = st.selectbox("Selecteer eerste variabel:", [
 	'date', 'temperature_2m_mean', 'apparent_temperature_mean',
 	'daylight_duration', 'sunshine_duration', 'precipitation_sum',
 	'rain_sum', 'snowfall_sum', 'precipitation_hours', 'wind_speed_10m_max',
@@ -138,7 +138,7 @@ with col1:
 
 with col2:
     st.header("Plotting Variable 2")
-    variable2 = st.selectbox("Select second variable:", [
+    variable2 = st.selectbox("Selecteer tweede variabel:", [
 	'date', 'temperature_2m_mean', 'apparent_temperature_mean',
 	'daylight_duration', 'sunshine_duration', 'precipitation_sum',
 	'rain_sum', 'snowfall_sum', 'precipitation_hours', 'wind_speed_10m_max',
@@ -181,7 +181,7 @@ daily_dataframe['wind_direction_category'] = daily_dataframe['wind_direction_10m
 
 
 wind_direction_options = daily_dataframe['wind_direction_category'].unique()
-selected_wind_direction = st.selectbox('Select Wind Direction', options=wind_direction_options)
+selected_wind_direction = st.selectbox('Selecteer wind richting', options=wind_direction_options)
 
 filtered_df = daily_dataframe[daily_dataframe['wind_direction_category'] == selected_wind_direction]
 

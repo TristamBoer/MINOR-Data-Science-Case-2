@@ -57,7 +57,7 @@ with col2:
                 '''
                 Bevat de volgende onderdelen:    
                 - **KNMI & OpenMeteo temperatuur voorspelling**    
-                - **Temperatuur voorspelling in verschillende steden  **  
+                - **Temperatuur voorspelling in verschillende steden**    
                 - **Temperatuur bij 'La Niña' en 'El Niño'**  
                 - **Regen bij 'La Niña' en 'El Niño'**  
                 - **Gevallen regen per jaar & maand**

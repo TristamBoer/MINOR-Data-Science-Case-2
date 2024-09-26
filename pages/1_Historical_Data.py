@@ -209,7 +209,7 @@ with col2:
 	])
 
 fig = px.scatter(data_frame=filtered_df,
-                 x=variable3, y='wind_speed_10m_max',
+                 x='date', y=variable3,
                  color='wind_direction_category')
 
 fig.update_layout(

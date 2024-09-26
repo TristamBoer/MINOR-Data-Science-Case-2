@@ -409,7 +409,8 @@ fig.update_layout(
     yaxis_title='Gemiddelde tempratuur in graden celsius voor Amsterdam',
     xaxis_title='Jaar',
     title_font_size=18,
-    legend_title_text='Oceanic Niño Index'
+    legend_title_text='Oceanic Niño Index',
+    error_y='rain_error'
     )
 
 st.plotly_chart(fig)

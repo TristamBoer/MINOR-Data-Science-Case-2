@@ -274,51 +274,67 @@ st.plotly_chart(fig)
 
 @st.cache_data
 def data4():
-        # Setup the Open-Meteo API client with cache and retry on error
-        cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
-        retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
-        openmeteo = openmeteo_requests.Client(session = retry_session)
-        
-        # Make sure all required weather variables are listed here
-        # The order of variables in hourly or daily is important to assign them correctly below
-        url = "https://climate-api.open-meteo.com/v1/climate"
-        params = {
-        	"latitude": 52.37403,
-        	"longitude": 4.88969,
-        	"start_date": "1950-01-01",
-        	"end_date": "2023-12-31",
-        	"models": "EC_Earth3P_HR",
-        	"daily": ["temperature_2m_mean", "temperature_2m_max", "temperature_2m_min", "rain_sum"]
-        }
-        responses = openmeteo.weather_api(url, params=params)
-        
-        # Process first location. Add a for-loop for multiple locations or weather models
-        response = responses[0]
-        
-        # Process daily data. The order of variables needs to be the same as requested.
-        daily = response.Daily()
-        daily_temperature_2m_mean = daily.Variables(0).ValuesAsNumpy()
-        daily_temperature_2m_max = daily.Variables(1).ValuesAsNumpy()
-        daily_temperature_2m_min = daily.Variables(2).ValuesAsNumpy()
-        daily_rain_sum = daily.Variables(3).ValuesAsNumpy()
-        
-        daily_data = {"date": pd.date_range(
-        	start = pd.to_datetime(daily.Time(), unit = "s", utc = True),
-        	end = pd.to_datetime(daily.TimeEnd(), unit = "s", utc = True),
-        	freq = pd.Timedelta(seconds = daily.Interval()),
-        	inclusive = "left"
-        )}
-        daily_data["temperature_2m_mean"] = daily_temperature_2m_mean
-        daily_data["temperature_2m_max"] = daily_temperature_2m_max
-        daily_data["temperature_2m_min"] = daily_temperature_2m_min
-        daily_data["rain_sum"] = daily_rain_sum
-        
-        return pd.DataFrame(data = daily_data)
+    # Setup the Open-Meteo API client with cache and retry on error
+    cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
+    retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
+    openmeteo = openmeteo_requests.Client(session=retry_session)
+    
+    # API Request parameters
+    url = "https://climate-api.open-meteo.com/v1/climate"
+    params = {
+        "latitude": 52.37403,
+        "longitude": 4.88969,
+        "start_date": "1950-01-01",
+        "end_date": "2023-12-31",
+        "models": "EC_Earth3P_HR",
+        "daily": ["temperature_2m_mean", "temperature_2m_max", "temperature_2m_min", "rain_sum"]
+    }
+    
+    responses = openmeteo.weather_api(url, params=params)
+    
+    # Process first location. Add a for-loop for multiple locations or weather models
+    response = responses[0]
+    
+    # Process daily data
+    daily = response.Daily()
+    daily_temperature_2m_mean = daily.Variables(0).ValuesAsNumpy()
+    daily_temperature_2m_max = daily.Variables(1).ValuesAsNumpy()
+    daily_temperature_2m_min = daily.Variables(2).ValuesAsNumpy()
+    daily_rain_sum = daily.Variables(3).ValuesAsNumpy()
+    
+    # Prepare DataFrame
+    daily_data = {
+        "date": pd.date_range(
+            start=pd.to_datetime(daily.Time(), unit="s", utc=True),
+            end=pd.to_datetime(daily.TimeEnd(), unit="s", utc=True),
+            freq=pd.Timedelta(seconds=daily.Interval()),
+            inclusive="left"
+        ),
+        "temperature_2m_mean": daily_temperature_2m_mean,
+        "temperature_2m_max": daily_temperature_2m_max,
+        "temperature_2m_min": daily_temperature_2m_min,
+        "rain_sum": daily_rain_sum
+    }
+    
+    # Convert to DataFrame
+    df = pd.DataFrame(daily_data)
+    
+    # Ensure that the numeric columns are of type float (you can cast other data types if necessary)
+    df["temperature_2m_mean"] = pd.to_numeric(df["temperature_2m_mean"], errors="coerce")
+    df["temperature_2m_max"] = pd.to_numeric(df["temperature_2m_max"], errors="coerce")
+    df["temperature_2m_min"] = pd.to_numeric(df["temperature_2m_min"], errors="coerce")
+    df["rain_sum"] = pd.to_numeric(df["rain_sum"], errors="coerce")
+    
+    return df
+
+# Fetch data
 daily_dataframe = data4()
 
+# Set 'date' as the index
 daily_dataframe.set_index('date', inplace=True)
 
-# Resample de data per jaar en bereken de gemiddelde waarden
+# Resample the data per year and calculate the mean values
+# Handle missing data or invalid values during resampling by using the mean with `skipna=True`
 yearly_dataframe = daily_dataframe.resample('Y').mean()
 
 yearly_dataframe.reset_index(inplace=True)
@@ -329,7 +345,7 @@ daily_dataframe = pd.DataFrame(data=daily_data)
 daily_dataframe.set_index('date', inplace=True)
 
 # Resample de data per maand en bereken de gemiddelde waarden
-monthly_dataframe = daily_dataframe.resample('M').agg('mean')
+monthly_dataframe = daily_dataframe.resample('M').mean()
 
 # Zet de index (datum) terug als een kolom voor visualisatie
 monthly_dataframe.reset_index(inplace=True)

@@ -9,6 +9,7 @@ import openmeteo_requests
 from retry_requests import retry
 import streamlit as st
 from sklearn.linear_model import LinearRegression
+import seaborn as sns
 
 def page_config():
         st.set_page_config(layout='wide',
@@ -384,12 +385,6 @@ monthly_summary = (daily_dataframe.resample('M').agg(
 # Create a month name column for better labeling
 monthly_summary['month_name'] = monthly_summary['date'].dt.strftime('%B')
 
-# Calculate standard error
-monthly_summary['rain_se'] = daily_dataframe.resample('M').agg(
-    rain_se=('rain_sum', lambda x: x.std() / (len(x) ** 0.5))
-)['rain_se'].values
-
-
 # Add Oceanic Niño Index column based on year
 la_nina_years = ['1954', '1955', '1964', '1970', '1971', '1973', '1974', 
                  '1975', '1983', '1984', '1988', '1995', '1998', '1999', 
@@ -427,22 +422,20 @@ st.plotly_chart(fig)
 
 st.header("Regen bij 'La Niña' en 'El Niño'")
 
-# Create a bar plot with error bars based on the monthly summary dataframe
-fig = px.bar(monthly_summary, 
-              x='month_name', 
-              y='rain_sum', 
-              color='Oceanic Niño Index',
-              title='Som van de regen per maand met Oceanic Niño Index',
-              labels={'rain_sum': 'Som van de regen (mm)', 'month_name': 'Maand'},
-              color_discrete_sequence=px.colors.qualitative.Set1,
-              error_y='rain_se')
-# Set barmode to 'group' for non-stacked bars
-fig.update_layout(
-    barmode='group',
-    legend_title_text='Oceanic Niño Index'
-)
+plt.figure()
+sns.barplot(x='month_name', y='rain_sum', hue='Oceanic Niño Index', data=monthly_dataframe, palette='Set1')
 
-st.plotly_chart(fig)
+# Titels en labels toevoegen
+plt.title('Som van de regen per maand met Oceanic Niño Index')
+plt.xlabel('Maand')
+plt.ylabel('Som van de regen (mm)')
+
+# Legenda toevoegen
+plt.legend(title='Oceanic Niño Index')
+
+# Grafiek weergeven
+plt.tight_layout()
+st.pyplot(plt)
 
 st.markdown(
         '''

@@ -63,8 +63,6 @@ def data2():
     return pd.DataFrame(data=meteo_data)
 meteo_df = data2()
 
-
-
 # Merge the KNMI and Open-Meteo datasets on the date column
 combined_df = pd.merge(knmi_df[['date', 'TX']], meteo_df, on='date', how='inner')
 
@@ -134,6 +132,69 @@ fig.update_layout(
 # Display the plot
 st.plotly_chart(fig)
 
+@st.cache_data
+def data3():
+    # Setup the Open-Meteo API client with cache and retry on error
+    cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
+    retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
+    openmeteo = openmeteo_requests.Client(session=retry_session)
+    
+    # Define the API request parameters
+    url = "https://climate-api.open-meteo.com/v1/climate"
+    params = {
+        "latitude": [52.5244, 52.374, 50.8505],  # Berlin, Amsterdam, Brussels
+        "longitude": [13.4105, 4.8897, 4.3488],  # Berlin, Amsterdam, Brussels
+        "start_date": "1950-01-01",
+        "end_date": "2050-12-31",
+        "models": ["CMCC_CM2_VHR4", "FGOALS_f3_H", "HiRAM_SIT_HR", "MRI_AGCM3_2_S", "EC_Earth3P_HR", "MPI_ESM1_2_XR", "NICAM16_8S"],
+        "daily": ["temperature_2m_mean"]
+    }
+    
+    # Fetch data from the API for each city
+    return openmeteo.weather_api(url, params=params)
+responses = data3()
+
+# Create an empty list to store DataFrames
+city_dfs = []
+
+# Define city names
+cities = ['Berlin', 'Amsterdam', 'Brussels']
+
+# Process the response for each city
+for idx, city in enumerate(cities):
+    response = responses[idx]
+    
+    # Extract daily data for temperature
+    daily = response.Daily()
+    daily_temperature_2m_mean = daily.Variables(0).ValuesAsNumpy()
+    
+    # Create a DataFrame from the data
+    daily_data = {
+        "date": pd.date_range(
+            start=pd.to_datetime(daily.Time(), unit="s", utc=True),
+            end=pd.to_datetime(daily.TimeEnd(), unit="s", utc=True),
+            freq=pd.Timedelta(seconds=daily.Interval()),
+            inclusive="left"
+        ),
+        "temperature_2m_mean": daily_temperature_2m_mean,
+        "city": [city] * len(daily_temperature_2m_mean)
+    }
+    
+    # Append the DataFrame for each city to the list
+    city_dfs.append(pd.DataFrame(daily_data))
+
+# Concatenate all city DataFrames into one
+daily_dataframe = pd.concat(city_dfs, ignore_index=True)
+
+# Convert the date column to datetime format
+daily_dataframe['date'] = pd.to_datetime(daily_dataframe['date'])
+
+# Filter data to only include June, July, and August
+daily_dataframe['month'] = daily_dataframe['date'].dt.month
+summer_data = daily_dataframe[daily_dataframe['month'].isin([6, 7, 8])]
+
+# Drop the 'month' column
+summer_data = summer_data.drop(columns=['month'])
 
 august_data = summer_data[summer_data['date'].dt.month == 8]
 august_data['year'] = august_data['date'].dt.year

@@ -329,7 +329,7 @@ daily_dataframe = pd.DataFrame(data=daily_data)
 daily_dataframe.set_index('date', inplace=True)
 
 # Resample de data per maand en bereken de gemiddelde waarden
-monthly_dataframe = daily_dataframe.resample('M').mean()
+monthly_dataframe = daily_dataframe.resample('M').agg('mean')
 
 # Zet de index (datum) terug als een kolom voor visualisatie
 monthly_dataframe.reset_index(inplace=True)

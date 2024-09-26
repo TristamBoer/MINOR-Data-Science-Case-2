@@ -15,13 +15,11 @@ def page_config():
                           page_title="Climate Models")
 page_config()
 
-uploaded_file = st.file_uploader("result_shivano.json", type="json")
 
 @st.cache_data # Zorgt ervoor dat de dataframe altijd geladen is
 def data1():
-    with open('result_shivano.json', 'r') as file:
+    with open(r'path/to/folder/result_shivano.json', 'r') as file:
         return json.load(file)
-
 knmi_df = pd.DataFrame(data1())
 
 # Convert the date column to datetime and ensure temperature (TX) is scaled

@@ -14,7 +14,7 @@ st.set_page_config(page_title='Historical Weather Data')
 
 st.markdown('# Historical Weather Data')
 
-@st.cache_data
+@st.cache_data # Zorgt ervoor dat de dataframe altijd geladen is
 def data():
 	# Setup the Open-Meteo API client with cache and retry on error
 	cache_session = requests_cache.CachedSession('.cache', expire_after = -1)
@@ -90,8 +90,6 @@ st.markdown(
 	    '''
 	)
 
-
-
 st.header('Historical Weather DataFrame')
 col1, col2 = st.columns([1,2.65])
 
@@ -126,11 +124,10 @@ with col1:
 	    '''
 	)
 
-
 with col2:
 	st.dataframe(daily_dataframe, height=600)
 
-st.text("")
+st.text("") # Extra pagina ruimte tussen stukken 
 
 st.header('Interactieve scatterplot van DataFrame')
 col1, col2, col3 = st.columns([1, 1, 4])
@@ -143,7 +140,6 @@ with col1:
 	'wind_gusts_10m_max', 'wind_direction_10m_dominant'
 	])
 			     
-
 with col2:
     variable2 = st.selectbox("Selecteer tweede variabel:", [
 	'date', 'temperature_2m_mean', 'apparent_temperature_mean',
@@ -158,6 +154,7 @@ with col3:
         fig = px.scatter(daily_dataframe, x=variable1, y=variable2, title=f'{variable1} vs {variable2}')
         st.plotly_chart(fig)
 
+st.text("") # Extra pagina ruimte tussen stukken 
 
 def categorize_wind_direction(degrees):
     if (degrees >= 337.5) or (degrees < 22.5):
@@ -178,7 +175,6 @@ def categorize_wind_direction(degrees):
         return 'North-West'
 
 daily_dataframe['wind_direction_category'] = daily_dataframe['wind_direction_10m_dominant'].apply(categorize_wind_direction)
-
 
 wind_direction_options = daily_dataframe['wind_direction_category'].unique()
 
@@ -211,6 +207,8 @@ fig.update_layout(
 )
 
 st.plotly_chart(fig)
+
+st.text("") # Extra pagina ruimte tussen stukken 
 
 st.header('Voorspellend model gemiddelde temperatuur')
 @st.cache_resource

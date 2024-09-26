@@ -526,6 +526,8 @@ year_list = daily_dataframe['year'].unique()
 start_year = int(year_list.min())
 end_year = int(year_list.max())
 
+st.header('Gevallen regen per jaar & maand')
+
 # Create a slider for year selection, using start_year and end_year as the limits
 year_selection = st.slider("Select a year", start_year, end_year, value=start_year)
 
@@ -536,6 +538,7 @@ month_selection = st.selectbox("Select a month", month_options)
 # Filter based on the selected year
 filtered_data = daily_dataframe[daily_dataframe['year'] == year_selection]
 
+
 # Further filter based on selected month
 if month_selection != 'All Months':
     month_selection_index = month_options.index(month_selection)
@@ -544,8 +547,6 @@ if month_selection != 'All Months':
 # Melt the DataFrame to show full precipitation in both rain and snow
 melted_data = pd.melt(filtered_data, id_vars='date', value_vars=['rain_sum', 'snowfall_sum'],
                        var_name='precipitation_type', value_name='amount')
-
-st.header('Gevallen regen per jaar & maand')
 
 # Create a bar plot based on the melted dataframe, showing total rain and snow on each day.
 fig = px.bar(melted_data, 

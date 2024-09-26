@@ -265,3 +265,9 @@ fig.update_layout(title='Temperature Forecast',
 fig.update_xaxes(range=[str(start_date), str(end_date)])
 
 st.plotly_chart(fig)
+
+st.markdown(
+	'''
+ 	- **[Prophet Model]**
+    	'''
+)

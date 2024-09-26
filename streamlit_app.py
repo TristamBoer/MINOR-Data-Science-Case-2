@@ -9,7 +9,7 @@ st.sidebar.success("Selecteer een van de bovenstaande pagina's.")
 
 st.title('Openmeteo & KNMI Weather app')
 
-# st.info('This is a weather app')
+st.info('Pagina bevat alleen informatie over de API, dataset en wat er wordt bespoken per onderwerp.')
 
 st.markdown(
     '''
@@ -31,6 +31,17 @@ st.markdown(
 
 st.write(
         '''
-        De combinatie van de Openmeteo API en KNMI-data zorgen voor mengsel van gedetailleerde lokale en globale gegevens.
+        De combinatie van de Openmeteo API en KNMI-data zorgen voor mengsel een van gedetailleerde lokale en globale gegevens.  
+        Binnen deze dashboard is er gekeken naar twee verschillende onderdelen van de OpenMeteo API:  
+        - ** Historical Weather **  
+        - ** Climate Change **  
         '''
 )
+
+col1, col2 = st.columns(2)
+
+with col1:
+        st.header('Historical Weather')
+
+with col2:
+        st.header('Climate Change')

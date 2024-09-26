@@ -5,8 +5,7 @@ def page_config():
                           page_title="Openmeteo Weather App")
 page_config()
 
-
-st.sidebar.success("Select a demo above.")
+st.sidebar.success("Selecteer een van de bovenstaande pagina's.")
 
 st.title('Openmeteo Weather app')
 

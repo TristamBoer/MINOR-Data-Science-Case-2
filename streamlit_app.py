@@ -44,7 +44,7 @@ with col1:
         st.header('Historical Weather')
         st.markdown(
                 '''
-                - **Uitleg DataFrame kolommen**  
+                Bevat de volgende onderdelen:
                 - **Interactieve scatterplot visualisatie van DataFrame**   
                 - **Interactieve scatterplot op basis van windrichting**  
                 - **Voorspellend model voor gemiddelde temperatuur**  

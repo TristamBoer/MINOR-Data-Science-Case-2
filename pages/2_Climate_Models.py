@@ -351,48 +351,39 @@ yearly_dataframe = daily_dataframe.resample('Y').mean()
 
 daily_dataframe = data4()
 
-# Ensure 'date' column is properly parsed and set as the index
+# Zorg ervoor dat 'date' de index is
 daily_dataframe.set_index('date', inplace=True)
 
-# Convert columns to numeric, ensuring all values can be averaged (handling invalid data)
-daily_dataframe["temperature_2m_mean"] = pd.to_numeric(daily_dataframe["temperature_2m_mean"], errors="coerce")
-daily_dataframe["temperature_2m_max"] = pd.to_numeric(daily_dataframe["temperature_2m_max"], errors="coerce")
-daily_dataframe["temperature_2m_min"] = pd.to_numeric(daily_dataframe["temperature_2m_min"], errors="coerce")
-daily_dataframe["rain_sum"] = pd.to_numeric(daily_dataframe["rain_sum"], errors="coerce")
-
-# Resample the data per year and calculate the mean values
+# Resample de data per jaar en bereken de gemiddelde waarden
 yearly_dataframe = daily_dataframe.resample('Y').mean()
 
-# Reset the index and create a 'year' column from the 'date'
+# Zet de index (datum) terug als een kolom voor visualisatie
 yearly_dataframe.reset_index(inplace=True)
-yearly_dataframe['year'] = yearly_dataframe['date'].dt.year  # Extra column for the year
+yearly_dataframe['year'] = yearly_dataframe['date'].dt.year  # Extra kolom met alleen het jaar
 
-# Resample the data per month and calculate the mean values
+# Zorg ervoor dat je daily_dataframe hebt
+daily_dataframe = pd.DataFrame(data=daily_data)
+
+# Zet de 'date' kolom in de index
+daily_dataframe.set_index('date', inplace=True)
+
+# Resample de data per maand en bereken de gemiddelde waarden
 monthly_dataframe = daily_dataframe.resample('M').mean()
-
-# Reset the index to work with month values easily, if needed
-monthly_dataframe.reset_index(inplace=True)
 
 # Zet de index (datum) terug als een kolom voor visualisatie
 monthly_dataframe.reset_index(inplace=True)
 
+# Voeg een kolom toe voor de maand
 monthly_dataframe['month'] = monthly_dataframe['date'].dt.month
 
-monthly_summary = (daily_dataframe.resample('M').agg(
-    rain_sum=('rain_sum', 'sum'),
-    rain_std=('rain_sum', 'std')
-)).reset_index()
+# Optioneel: Voeg een kolom toe voor de maandnaam
+monthly_dataframe['month_name'] = monthly_dataframe['date'].dt.strftime('%B')
+#%%
+# Lijst met La Niña jaren als strings
+la_nina_years = ['1954', '1955', '1964', '1970', '1971', '1973', '1974', '1975', '1983', '1984', 
+                 '1988', '1995', '1998', '1999', '2000', '2005', '2007', '2008', '2010', 
+                 '2011', '2016', '2017', '2020', '2021', '2022']
 
-# Create a month name column for better labeling
-monthly_summary['month_name'] = monthly_summary['date'].dt.strftime('%B')
-
-# Add Oceanic Niño Index column based on year
-la_nina_years = ['1954', '1955', '1964', '1970', '1971', '1973', '1974', 
-                 '1975', '1983', '1984', '1988', '1995', '1998', '1999', 
-                 '2000', '2005', '2007', '2008', '2010', '2011', '2016', 
-                 '2017', '2020', '2021', '2022']
-
-monthly_summary['Oceanic Niño Index'] = monthly_summary['date'].dt.year.astype(str).isin(la_nina_years).map({True: 'La Niña', False: 'El Niño'})
 
 # Toevoegen van een nieuwe kolom met 'La Niña' of 'El Niño' op basis van de jaarcontrole in yearly_dataframe
 yearly_dataframe['Oceanic Niño Index'] = yearly_dataframe['year'].astype(str).isin(la_nina_years).map({True: 'La Niña', False: 'El Niño'})

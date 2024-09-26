@@ -414,7 +414,7 @@ st.plotly_chart(fig)
 
 st.header("Regen bij 'La Niña' en 'El Niño'")
 
-plt.figure()
+plt.figure(figsize=(12,6))
 sns.barplot(x='month_name', y='rain_sum', hue='Oceanic Niño Index', data=monthly_dataframe, palette='Set1')
 
 # Titels en labels toevoegen
@@ -426,7 +426,7 @@ plt.ylabel('Som van de regen (mm)')
 plt.legend(title='Oceanic Niño Index')
 
 # Grafiek weergeven
-plt.tight_layout(figsize=(12,6))
+plt.tight_layout()
 st.pyplot(plt)
 
 st.markdown(

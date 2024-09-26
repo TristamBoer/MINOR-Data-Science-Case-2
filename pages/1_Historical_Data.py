@@ -61,7 +61,7 @@ daily_data["rain_sum"] = daily_rain_sum
 daily_data["snowfall_sum"] = daily_snowfall_sum
 daily_data["precipitation_hours"] = daily_precipitation_hours
 daily_data["wind_speed_10m_max"] = daily_wind_speed_10m_max
-daily_data["wind_gusts_10m_max"] = daily_wind_gusts_10m_max
+daily_data["wind_gusts_10m_max"] = daily_wind_gusts_10m_maxe
 daily_data["wind_direction_10m_dominant"] = daily_wind_direction_10m_dominant
 
 daily_dataframe = pd.DataFrame(data=daily_data)
@@ -128,7 +128,9 @@ with col1:
 	    - **wind_gusts_10m_max:**  
 	      *Bevat de maximale windvlaag op een dag, in km/u.*  
 	    - **wind_direction_10m_dominant:**  
-	      *Bevat de dominante windrichting op een dag, in graden.*  
+	      *Bevat de dominante windrichting op een dag, in graden.*
+       	    - **wind_direction_category**
+	      *Bevat de richting van de wind.*
 	    '''
 	)
 

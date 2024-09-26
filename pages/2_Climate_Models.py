@@ -421,15 +421,6 @@ st.plotly_chart(fig)
 
 st.header("Regen bij 'La Niña' en 'El Niño'")
 
-# Group by month and Oceanic Niño Index to calculate monthly sum and standard deviation
-monthly_summary = (daily_dataframe.groupby(['month', 'Oceanic Niño Index'])
-                   .agg(rain_sum=('rain_sum', 'sum'),
-                        rain_std=('rain_sum', 'std'))
-                   .reset_index())
-
-# Create a month name column for better labeling
-monthly_summary['month_name'] = monthly_summary['month'].apply(lambda x: month_name[x])
-
 # Create a bar plot with error bars based on the monthly summary dataframe
 fig = px.bar(monthly_summary, 
               x='month_name', 

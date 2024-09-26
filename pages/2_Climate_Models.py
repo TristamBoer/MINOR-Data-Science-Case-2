@@ -426,7 +426,7 @@ plt.ylabel('Som van de regen (mm)')
 plt.legend(title='Oceanic Niño Index')
 
 # Grafiek weergeven
-plt.tight_layout()
+plt.tight_layout(figsize=(12,6))
 st.pyplot(plt)
 
 st.markdown(

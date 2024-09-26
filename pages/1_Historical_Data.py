@@ -160,6 +160,29 @@ with col3:
 
 
 
+# Create wind direction slider in Streamlit
+wind_direction_options = daily_dataframe['wind_direction_category'].unique()
+selected_wind_direction = st.selectbox('Select Wind Direction', options=wind_direction_options)
+
+# Filter the dataframe based on selected wind direction
+filtered_df = daily_dataframe[daily_dataframe['wind_direction_category'] == selected_wind_direction]
+
+# Create the scatter plot with filtered data
+fig = px.scatter(data_frame=filtered_df,
+                 x='date', y='wind_speed_10m_max',
+                 color='wind_direction_category')
+
+fig.update_layout(
+    title=f'Wind Speed (Max) based on Direction: {selected_wind_direction}',
+    yaxis_title='Max Wind Speed [km/h]',
+    xaxis_title='Date',
+    title_font_size=18,
+)
+
+# Display the plot
+st.plotly_chart(fig)
+
+
 
 # fig = go.Figure()
 

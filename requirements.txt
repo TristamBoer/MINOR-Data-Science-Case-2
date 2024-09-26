@@ -10,3 +10,4 @@ numpy
 prophet
 scikit-learn
 seaborn
+matplotlib

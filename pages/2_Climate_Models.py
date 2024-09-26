@@ -10,6 +10,7 @@ from retry_requests import retry
 import streamlit as st
 from sklearn.linear_model import LinearRegression
 import seaborn as sns
+import matplotlib.pyplot as plt
 
 def page_config():
         st.set_page_config(layout='wide',

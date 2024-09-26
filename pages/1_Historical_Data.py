@@ -209,8 +209,8 @@ with col2:
 	])
 
 fig = px.scatter(data_frame=filtered_df,
-                 x='date', y=variable3,
-                 color='wind_direction_category')
+                 x='date', y=variable3
+		)
 
 fig.update_layout(
     title=f'{variable3} gebaseerd op directie: {selected_wind_direction}',

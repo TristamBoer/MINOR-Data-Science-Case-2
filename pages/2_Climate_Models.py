@@ -17,6 +17,17 @@ def page_config():
                           page_title="Climate Models")
 page_config()
 
+st.markdown('# Climate Change')
+st.markdown(
+	    '''  
+	    Binnen de Climate Change API worden de volgende onderwerpen op volgorde besproken:  
+                - **KNMI & OpenMeteo temperatuur voorspelling**    
+                - **Temperatuur voorspelling in verschillende steden**    
+                - **Temperatuur bij 'La Niña' en 'El Niño'**  
+                - **Regen bij 'La Niña' en 'El Niño'**  
+                - **Gevallen regen per jaar & maand**
+	    '''
+	)
 
 
 @st.cache_data # Zorgt ervoor dat de dataframe altijd geladen is

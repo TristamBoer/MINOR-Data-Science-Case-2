@@ -26,6 +26,8 @@ st.write(
         Daarnaast biedt de KNMI (Koninklijk Nederlands Meteorologisch Instituut) uitgebreide weer een klimaatdata voor Nederland. 
         Het KNMI, net zoals de OpenMeteo API, levert zowel actuele data als historische datasets. 
         Net als de OpenMeteo API, is de KNMI dataset makkelijk aan te passen. De user kan zelf kiezen welke variabelen beschikbaar zijn.
+        De KNMI bevat zelf ook een API, maar door een vereising van een API-sleutel is deze niet gebruikt. 
+        Hierdoor is een openbare dataset gebruikt.
 
         - **https://daggegevens.knmi.nl/klimatologie/daggegevens**
         '''
